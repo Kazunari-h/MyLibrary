@@ -1,6 +1,10 @@
 <resources>
-    <string name="app_name">MyLibrary</string>
-
+    <string name="app_name">sample</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">設定</string>
+    <string name="action_add">アイテム追加</string>
+    <string name="action_del">アイテム削除</string>
+    <string name="more">もっと見る</string>
+    <string name="action_search">アイテム検索</string>
+    <string name="search_menu_search_text">Search</string>
 </resources>
