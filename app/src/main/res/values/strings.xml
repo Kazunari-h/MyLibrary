@@ -7,4 +7,6 @@
     <string name="more">もっと見る</string>
     <string name="action_search">アイテム検索</string>
     <string name="search_menu_search_text">Search</string>
+    <string name="title_activity_cook_add">CookAddActivity</string>
+    <string name="title_activity_book_list">BookListActivity</string>
 </resources>

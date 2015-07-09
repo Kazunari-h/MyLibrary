@@ -5,6 +5,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -81,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!animeFlg){
+                if (!animeFlg) {
                     if (clickFlg) {
                         onClickOpenMenu();
                         clickFlg = false;
@@ -90,6 +91,14 @@ public class MainActivity extends ActionBarActivity {
                         clickFlg = true;
                     }
                 }
+            }
+        });
+
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CookAddActivity.class);
+                startActivity(intent);
             }
         });
 
