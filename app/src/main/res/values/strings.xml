@@ -8,5 +8,7 @@
     <string name="action_search">アイテム検索</string>
     <string name="search_menu_search_text">Search</string>
     <string name="title_activity_cook_add">CookAddActivity</string>
-    <string name="title_activity_book_list">BookListActivity</string>
+    <string name="title_activity_book_list">BOOKリスト</string>
+    <string name="title_activity_book_add">BookAddActivity</string>
+    <string name="switchText">所有しているか？</string>
 </resources>

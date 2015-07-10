@@ -51,23 +51,11 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Windowアニメーションを無効化
+        overridePendingTransition(0, 0);
+
         actionBar = this.getSupportActionBar();
         actionBar.hide();
-
-        /*
-        // ActionBarの設定
-        if (savedInstanceState == null) {
-            // ActionBarの取得
-            ActionBar actionBar = this.getSupportActionBar();
-            actionBar.hide();
-            // 戻るボタンを表示するかどうか('<' <- こんなやつ)
-            actionBar.setDisplayHomeAsUpEnabled(false);
-            // タイトルを表示するか
-            actionBar.setDisplayShowTitleEnabled(true);
-            // iconを表示するか
-            actionBar.setDisplayShowHomeEnabled(false);
-        }
-        */
 
         //Property Animation: Changing TextColor
         button1 = (ImageView) findViewById(R.id.button1);
@@ -94,10 +82,50 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                startActivity(intent);
+            }
+        });
+
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, CookAddActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        button7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
                 startActivity(intent);
             }
         });
@@ -202,7 +230,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void onClickOpenMenu(){
         playFromOpenSoundPool();
-        button2.setImageResource(R.drawable.gearflat);
         animateAnimatorSetSample(button1, 45f * 1, fl.getWidth()/2);
         animateAnimatorSetSample(button3, 45f * 2, fl.getWidth()/2);
         animateAnimatorSetSample(button4, 45f * 3, fl.getWidth()/2);
@@ -213,7 +240,6 @@ public class MainActivity extends ActionBarActivity {
 
     private void onClickCloseMenu(){
         playFromCloseSoundPool();
-        button2.setImageResource(R.drawable.touch);
         animateAnimatorSetSample(button1, 45f * 1 - 180f, fl.getWidth()/2);
         animateAnimatorSetSample(button3, 45f * 2 - 180f ,fl.getWidth()/2);
         animateAnimatorSetSample(button4, 45f * 3 - 180f ,fl.getWidth()/2);
@@ -266,4 +292,5 @@ public class MainActivity extends ActionBarActivity {
         translationXYAnimator.start();
 
     }
+
 }

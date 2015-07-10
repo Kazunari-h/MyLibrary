@@ -1,8 +1,10 @@
 package jp.ac.hal.ths35033.mylibrary;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 
@@ -12,13 +14,26 @@ public class BookListActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+
+        // ActionBarの設定
+        if (savedInstanceState == null) {
+            // ActionBarの取得
+            ActionBar actionBar = this.getSupportActionBar();
+            // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            // タイトルを表示するか
+            actionBar.setDisplayShowTitleEnabled(true);
+            // iconを表示するか
+            actionBar.setDisplayShowHomeEnabled(true);
+            actionBar.show();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_book_list, menu);
-        return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_book_list, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -35,4 +50,5 @@ public class BookListActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
