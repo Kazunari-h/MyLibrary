@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -73,6 +74,9 @@ public class BookListActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if(id==android.R.id.home){
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -101,26 +105,19 @@ public class BookListActivity extends ActionBarActivity {
                 //文字列を連結させるクラス
                 StringBuilder strbTotal = new StringBuilder();
                 ArrayList<Book> list = new ArrayList<>();
-                for (int i  = 0 ; i < 20 ; i++ ){
-                    Book b = new Book();
-                    b.setTitle("BOOK"+i);
-                    list.add(b);
-                }
+//                for (int i  = 0 ; i < 20 ; i++ ){
+//                    Book b = new Book();
+//                    b.setTitle("BOOK"+i);
+//                    b.setItemURL("https://www.google.co.jp");
+//                    list.add(b);
+//                }
+
                 //csr.getCOunt()でcsrの要素数を取得し、その要素数分繰り返す。
                 for(int i = 0; i < csr.getCount(); i++){
                     //カラムの名前が順番に配列strsに格納される。
                     String[] strs = csr.getColumnNames();
-                    StringBuilder strbParts = new StringBuilder();
-
-                    for(int s = 0; s < strs.length; s++){
-                        if(strs[s].equals("title")){
-                            Book b = new Book();
-                            b.setTitle(csr.getString(s));
-                            list.add(b);
-                        }
-                    }
-                    //strbTotalに\nを連結させている。
-                    strbTotal.append(strbParts.append("\n"));
+                    Book b = setBook(csr,strs);
+                    list.add(b);
                     //csrの次の行を撮りに行く。
                     csr.moveToNext();
                 }
@@ -129,7 +126,6 @@ public class BookListActivity extends ActionBarActivity {
                 GridBookAdapter adapter = new GridBookAdapter(this);
                 adapter.setBooKList(list);
                 gv.setAdapter(adapter);
-
                 //データベースをクローズさせる。
                 db.close();
 
@@ -138,8 +134,65 @@ public class BookListActivity extends ActionBarActivity {
             }
 
         }else{
-            Log.d("err","データが入っていません。");
+            Log.d("err", "データが入っていません。");
         }
 
+    }
+
+    public Book setBook(Cursor csr ,String[] strs) throws SQLException,Exception {
+        Book b = new Book();
+        for (int s = 0; s < strs.length; s++) {
+            switch (strs[s]) {
+                case "title":
+                    b.setTitle(csr.getString(s));
+                    break;
+                case "titleKana":
+                    b.setTitleKana(csr.getString(s));
+                    break;
+                case "author":
+                    b.setAuthor(csr.getString(s));
+                    break;
+                case "authorKana":
+                    b.setAuthorKana(csr.getString(s));
+                    break;
+                case "publisherName":
+                    b.setPublisherName(csr.getString(s));
+                    break;
+                case "size":
+                    b.setSize(csr.getInt(s));
+                    break;
+                case "isbn":
+                    b.setIsbn(csr.getString(s));
+                    break;
+                case "itemCaption":
+                    b.setItemCaption(csr.getString(s));
+                    break;
+                case "salesDate":
+                    b.setSalesDate(csr.getString(s));
+                    break;
+                case "itemPrice":
+                    b.setItemPrice(csr.getInt(s));
+                    break;
+                case "itemURL":
+                    b.setItemURL(csr.getString(s));
+                    break;
+                case "smallImageURL":
+                    b.setSmallImageURL(csr.getString(s));
+                    break;
+                case "haveFlg":
+                    b.setHaveFlg(csr.getInt(s));
+                    break;
+                case "lending":
+                    b.setLending(csr.getString(s));
+                    break;
+                case "rate":
+                    b.setRate(csr.getInt(s));
+                    break;
+                case "updateddate":
+                    b.setUpdate(csr.getString(s));
+                    break;
+            }
+        }
+        return b;
     }
 }

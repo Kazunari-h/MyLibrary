@@ -17,6 +17,7 @@ public class Book implements Serializable {
     String authorKana;
     String publisherName;
     String itemCaption;
+    String isbn;
     String salesDate;
     String itemURL;
     String smallImageURL;
@@ -151,4 +152,14 @@ public class Book implements Serializable {
     public void setUpdate(String update) {
         this.update = update;
     }
+
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
 }
