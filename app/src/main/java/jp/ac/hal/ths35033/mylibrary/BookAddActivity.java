@@ -3,6 +3,7 @@ package jp.ac.hal.ths35033.mylibrary;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,11 +17,30 @@ import java.util.List;
 
 public class BookAddActivity extends ActionBarActivity {
 
+    Book book;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_add);
+        book = (Book) getIntent().getSerializableExtra("book");
 
+        if (book != null){
+            // ActionBarの設定
+            if (savedInstanceState == null) {
+                // ActionBarの取得
+                ActionBar actionBar = this.getSupportActionBar();
+                actionBar.setTitle(book.title);
+                actionBar.setSubtitle(book.author);
+                // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                // タイトルを表示するか
+                actionBar.setDisplayShowTitleEnabled(true);
+                // iconを表示するか
+                actionBar.setDisplayShowHomeEnabled(true);
+                actionBar.show();
+            }
+        }
     }
 
     @Override

@@ -40,6 +40,8 @@ public class MainActivity extends ActionBarActivity {
 
     float xPos;
     float yPos;
+    float childXPos;
+    float childYPos;
 
     boolean clickFlg = true;
     boolean animeFlg = false;
@@ -144,8 +146,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void setViewPos(){
-        float childXPos = (fl.getWidth() - button1.getWidth())/2;
-        float childYPos = (fl.getHeight() - button1.getHeight())/2;
+        childXPos = (fl.getWidth() - button1.getWidth())/2;
+        childYPos = (fl.getHeight() - button1.getHeight())/2;
         button1.setX(childXPos);
         button1.setY(childYPos);
         button3.setX(childXPos);
@@ -189,6 +191,7 @@ public class MainActivity extends ActionBarActivity {
         mSoundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
         openSoundId = mSoundPool.load(getApplicationContext(), R.raw.open, 0);
         closeSoundId = mSoundPool.load(getApplicationContext(), R.raw.close, 0);
+        clickFlg = true;
     }
 
     @Override
@@ -196,6 +199,19 @@ public class MainActivity extends ActionBarActivity {
         super.onPause();
         // リリース
         mSoundPool.release();
+        clickFlg = true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        clickFlg = true;
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        clickFlg = true;
     }
 
     private void playFromOpenSoundPool() {
@@ -208,7 +224,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void chengeColorAnime(View v,String propetyName,int colorA,int colorB){
-        ObjectAnimator colorAnimator = ObjectAnimator.ofInt(v,propetyName,colorA,colorB);
+        ObjectAnimator colorAnimator = ObjectAnimator.ofInt(v, propetyName, colorA, colorB);
         colorAnimator.setDuration(3000);
         colorAnimator.setEvaluator(new ArgbEvaluator());
         colorAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -292,5 +308,6 @@ public class MainActivity extends ActionBarActivity {
         translationXYAnimator.start();
 
     }
+
 
 }
