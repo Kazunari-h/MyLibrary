@@ -3,6 +3,7 @@ package jp.ac.hal.ths35033.mylibrary;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 
 /**
  * Created by hirosawak on 2015/07/11.
@@ -46,9 +47,8 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         更新日
          */
 
-        db.execSQL(
-                "create table book_table ("
-                        + "_id  integer primary key autoincrement not null, "
+        db.execSQL("create table book_table ("
+                        + " _id integer primary key autoincrement not null, "
                         + "title text not null, "
                         + "titleKana text, "
                         + "author text, "
@@ -63,8 +63,23 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
                         + "haveFlg integer, "
                         + "lending text, "
                         + "rate integer, "
-                        + "update text "
-                        + " )" );
+                        + "updateddate text "
+                        + " );" );
+
+        SQLiteStatement stmt = db.compileStatement("insert into book_table(title,author) values (?, ?);");
+        stmt.bindString(1, "PHP");
+        stmt.bindString(2, "kazu");
+        stmt.execute();
+
+        stmt.bindString(1, "HTML");
+        stmt.bindString(2, "hiro");
+        stmt.execute();
+
+        stmt.bindString(1, "HTML");
+        stmt.bindString(2, "aki");
+        stmt.execute();
+
+
     }
 
 

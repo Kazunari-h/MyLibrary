@@ -11,4 +11,5 @@
     <string name="title_activity_book_list">BOOKリスト</string>
     <string name="title_activity_book_add">BookAddActivity</string>
     <string name="switchText">所有しているか？</string>
+    <string name="title_activity_book_detail">BookDetailActivity</string>
 </resources>
