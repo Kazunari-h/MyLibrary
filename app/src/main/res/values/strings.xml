@@ -24,4 +24,7 @@
     <string name="book_edit">編集</string>
     <string name="book_line">Lineで知らせる</string>
     <string name="book_tweet">つぶやく</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -50,8 +50,6 @@ public class BookDetailActivity extends ActionBarActivity {
         TextView lending    = (TextView)findViewById(R.id.lending);
         TextView haveFlg    = (TextView)findViewById(R.id.haveFlg);
 
-
-
         title.setText(book.getTitle());
         titleKana.setText(book.getTitleKana());
         author.setText(book.getAuthor());

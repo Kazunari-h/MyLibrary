@@ -73,12 +73,10 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (!animeFlg) {
-                    if (clickFlg) {
+                    if (button1.getX() <= childXPos + 1 && button1.getX() >= childXPos - 1){
                         onClickOpenMenu();
-                        clickFlg = false;
                     } else {
                         onClickCloseMenu();
-                        clickFlg = true;
                     }
                 }
             }
