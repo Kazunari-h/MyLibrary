@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 
-public class BookAddActivity extends FragmentActivity implements FragmentTabHost.OnTabChangeListener,BookEdit1Fragment.OnFragmentInteractionListener {
+public class BookAddActivity extends FragmentActivity
+        implements FragmentTabHost.OnTabChangeListener,BookEdit1Fragment.OnFragmentInteractionListener,BookEdit2Fragment.OnFragmentInteractionListener {
 
     Book book;
 
@@ -19,6 +21,7 @@ public class BookAddActivity extends FragmentActivity implements FragmentTabHost
         setContentView(R.layout.activity_book_add);
         book = (Book) getIntent().getSerializableExtra("book");
 
+        Toast.makeText(this,book.getTitle(),Toast.LENGTH_LONG).show();
 
         // FragmentTabHost を取得する
         FragmentTabHost tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
@@ -42,7 +45,7 @@ public class BookAddActivity extends FragmentActivity implements FragmentTabHost
         tabSpec3 = tabHost.newTabSpec("ISBNリーダー");
         tabSpec3.setIndicator("ISBNリーダー");
         // TabHost に追加
-        tabHost.addTab(tabSpec3, BookEdit2Fragment.class, null);
+        tabHost.addTab(tabSpec3, BookEdit1Fragment.class, null);
 
         // リスナー登録
         tabHost.setOnTabChangedListener(this);
