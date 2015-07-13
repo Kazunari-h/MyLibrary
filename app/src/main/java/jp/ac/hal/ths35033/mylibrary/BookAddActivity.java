@@ -1,21 +1,15 @@
 package jp.ac.hal.ths35033.mylibrary;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.TabHost;
 
 
-public class BookAddActivity extends ActionBarActivity {
+public class BookAddActivity extends FragmentActivity implements FragmentTabHost.OnTabChangeListener,BookEdit1Fragment.OnFragmentInteractionListener {
 
     Book book;
 
@@ -25,22 +19,32 @@ public class BookAddActivity extends ActionBarActivity {
         setContentView(R.layout.activity_book_add);
         book = (Book) getIntent().getSerializableExtra("book");
 
-        if (book != null){
-            // ActionBarの設定
-            if (savedInstanceState == null) {
-                // ActionBarの取得
-                ActionBar actionBar = this.getSupportActionBar();
-                actionBar.setTitle(book.title);
-                actionBar.setSubtitle(book.author);
-                // 戻るボタンを表示するかどうか('<' <- こんなやつ)
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                // タイトルを表示するか
-                actionBar.setDisplayShowTitleEnabled(true);
-                // iconを表示するか
-                actionBar.setDisplayShowHomeEnabled(true);
-                actionBar.show();
-            }
-        }
+        // FragmentTabHost を取得する
+        FragmentTabHost tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
+        tabHost.setup(this, getSupportFragmentManager(), R.id.container);
+
+        TabHost.TabSpec tabSpec1, tabSpec2, tabSpec3;
+
+        // TabSpec を生成する
+        tabSpec1 = tabHost.newTabSpec("直接入力");
+        tabSpec1.setIndicator("直接入力");
+        // TabHost に追加
+        tabHost.addTab(tabSpec1, BookEdit1Fragment.class, null);
+
+        // TabSpec を生成する
+        tabSpec2 = tabHost.newTabSpec("検索");
+        tabSpec2.setIndicator("検索");
+        // TabHost に追加
+        tabHost.addTab(tabSpec2, BookEdit1Fragment.class, null);
+
+        // TabSpec を生成する
+        tabSpec3 = tabHost.newTabSpec("ISBNリーダー");
+        tabSpec3.setIndicator("ISBNリーダー");
+        // TabHost に追加
+        tabHost.addTab(tabSpec3, BookEdit1Fragment.class, null);
+
+        // リスナー登録
+        tabHost.setOnTabChangedListener(this);
     }
 
     @Override
@@ -66,84 +70,14 @@ public class BookAddActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void AccessDatabase(){
+    @Override
+    public void onTabChanged(String tabId) {
+        System.out.println("******************************");
 
-        GridView gv = new GridView(this);
-        MySQLiteOpenHelper helper = new MySQLiteOpenHelper(this);
-        SQLiteDatabase db = helper.getReadableDatabase();
+    }
 
-        //dbにデータが格納されていれば、この処理が実行される。
-        if(db != null){
-            try{
-                //sql文
-                String sql = "SELECT * FROM book_table ORDER BY _id ASC";
-                //データベースから取得したデータを、一件ずつCursorに格納する。(配列のようなもの)
-                Cursor csr = db.rawQuery(sql,null);
-                //データベースのカーソルを先頭に持って来る。
-                csr.moveToFirst();
-                //文字列を連結させるクラス
-                StringBuilder strbTotal = new StringBuilder();
-                List<String> list = new ArrayList<>();
-                //csr.getCOunt()でcsrの要素数を取得し、そのよう素数分繰り返す。
-                for(int i = 0; i < csr.getCount(); i++){
-                    //カラムの名前が順番に配列strsに格納される。
-                    String[] strs = csr.getColumnNames();
-                    StringBuilder strbParts = new StringBuilder();
-
-                    for(int s = 0; s < strs.length; s++){
-                        if(strs[s].equals("title")){
-                            list.add(csr.getString(s));
-                            System.out.println("a");
-                        }
-                    }
-                    //strbTotalに\nを連結させている。
-                    strbTotal.append(strbParts.append("\n"));
-                    //csrの次の行を撮りに行く。
-                    csr.moveToNext();
-                }
-                //データベースの取得が終わったら、csrを閉じる。
-                csr.close();
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
-                gv.setAdapter(adapter);
-                //データベースをクローズさせる。
-                db.close();
-
-            }catch(Exception er){
-                Log.e("err", "SQLException:" + er.toString());
-            }
-
-        }else{
-            Log.d("err","データが入っていません。");
-        }
-
-
-//        Cursor c = db.query("book_table", new String[] {
-//                    "_id",
-//                    "title",
-//                    "titleKana",
-//                    "author",
-//                    "authorKana",
-//                    "publisherName",
-//                    "size",
-//                    "itemCaption",
-//                    "salesDate",
-//                    "itemPrice",
-//                    "itemURL",
-//                    "smallImageURL",
-//                    "haveFlg",
-//                    "lending",
-//                    "rate",
-//                    "update"
-//                },
-//                null, null, null, null, null);
-//        boolean isEof = c.moveToFirst();
-//        while (isEof) {
-//            GridView gv = new GridView(this);
-//
-//            isEof = c.moveToNext();
-//        }
-//        c.close();
-//        db.close();
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 }

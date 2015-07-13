@@ -6,22 +6,39 @@ import java.io.Serializable;
  * Created by hirosawak on 2015/07/12.
  */
 public class Book implements Serializable {
+
     int _id;
+    //種別
     int size;
+    // 進行度
     int rate;
+    //所持フラグ
     int haveFlg;
+    // 価格
     int itemPrice;
+    // タイトル
     String title;
+    // タイトルカナ
     String titleKana;
+    // 著者
     String author;
+    // 著者カナ
     String authorKana;
+    // 出版社
     String publisherName;
+    // 説明
     String itemCaption;
+    // ISBN
     String isbn;
+    //発売日
     String salesDate;
+    // URL
     String itemURL;
+    // image
     String smallImageURL;
+    //貸出
     String lending;
+    //更新日
     String update;
 
 
