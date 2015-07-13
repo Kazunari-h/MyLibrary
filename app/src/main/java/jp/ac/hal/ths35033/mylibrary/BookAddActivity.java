@@ -18,6 +18,7 @@ public class BookAddActivity extends FragmentActivity implements FragmentTabHost
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_add);
         book = (Book) getIntent().getSerializableExtra("book");
+        
 
         // FragmentTabHost を取得する
         FragmentTabHost tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
