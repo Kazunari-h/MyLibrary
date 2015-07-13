@@ -18,7 +18,7 @@ public class BookAddActivity extends FragmentActivity implements FragmentTabHost
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_add);
         book = (Book) getIntent().getSerializableExtra("book");
-        
+
 
         // FragmentTabHost を取得する
         FragmentTabHost tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
@@ -36,13 +36,13 @@ public class BookAddActivity extends FragmentActivity implements FragmentTabHost
         tabSpec2 = tabHost.newTabSpec("検索");
         tabSpec2.setIndicator("検索");
         // TabHost に追加
-        tabHost.addTab(tabSpec2, BookEdit1Fragment.class, null);
+        tabHost.addTab(tabSpec2, BookEdit2Fragment.class, null);
 
         // TabSpec を生成する
         tabSpec3 = tabHost.newTabSpec("ISBNリーダー");
         tabSpec3.setIndicator("ISBNリーダー");
         // TabHost に追加
-        tabHost.addTab(tabSpec3, BookEdit1Fragment.class, null);
+        tabHost.addTab(tabSpec3, BookEdit2Fragment.class, null);
 
         // リスナー登録
         tabHost.setOnTabChangedListener(this);
