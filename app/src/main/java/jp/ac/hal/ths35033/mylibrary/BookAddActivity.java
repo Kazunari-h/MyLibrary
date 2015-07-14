@@ -161,16 +161,16 @@ public class BookAddActivity extends ActionBarActivity
                 currentX = event.getX();
                 if (lastTouchX < currentX) {
                     //前に戻る動作
-                    target = ++target % 3;
+                    target--;
+                    if (target < 0){
+                        target = 2;
+                    }
                     System.out.println(target);
                     tabHost.setCurrentTab(target);
                 }
                 if (lastTouchX > currentX) {
                     //次に移動する動作
-                    target--;
-                    if (target < 0){
-                        target = 2;
-                    }
+                    target = ++target % 3;
                     System.out.println(target);
                     tabHost.setCurrentTab(target);
                 }
@@ -180,20 +180,19 @@ public class BookAddActivity extends ActionBarActivity
                 currentX = event.getX();
                 if (lastTouchX < currentX) {
                     //前に戻る動作
-                    target = ++target % 3;
-                    tabHost.setCurrentTab(target);
-                }
-                if (lastTouchX > currentX) {
-                    //次に移動する動作
                     target--;
                     if (target < 0){
                         target = 2;
                     }
                     tabHost.setCurrentTab(target);
                 }
+                if (lastTouchX > currentX) {
+                    //次に移動する動作
+                    target = ++target % 3;
+                    tabHost.setCurrentTab(target);
+                }
                 break;
         }
         return true;
     }
-
 }

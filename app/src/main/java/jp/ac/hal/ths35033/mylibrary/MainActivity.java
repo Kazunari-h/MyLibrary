@@ -214,11 +214,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void playFromOpenSoundPool() {
         // 再生
-        mSoundPool.play(openSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
+        //mSoundPool.play(openSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
     }
     private void playFromCloseSoundPool() {
         // 再生
-        mSoundPool.play(closeSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
+        //mSoundPool.play(closeSoundId, 1.0F, 1.0F, 0, 0, 1.0F);
     }
 
     public void chengeColorAnime(View v,String propetyName,int colorA,int colorB){

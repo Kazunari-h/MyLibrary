@@ -4,9 +4,50 @@
     android:layout_height="match_parent"
     tools:context="jp.ac.hal.ths35033.mylibrary.BookEdit2Fragment">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_gravity="center"
+        android:layout_margin="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/searchTitle"
+            android:id="@+id/textView"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/searchText"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/formTitle"
+            android:textColor="#000"
+            android:id="@+id/textView2"
+            android:layout_marginTop="0dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/formHint"
+            android:id="@+id/editText" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/searchBtnText"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+    </LinearLayout>
 
 </FrameLayout>
