@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 
 /**
@@ -26,6 +27,8 @@ public class BookEdit3Fragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private BookAddActivity bookAddActivity;
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,7 +67,17 @@ public class BookEdit3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_book_edit3, container, false);
+        View view = inflater.inflate(R.layout.fragment_book_edit3, container, false);
+
+        Button button = (Button)view.findViewById(R.id.cameraOn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("````````````````````");
+                bookAddActivity.move();
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,6 +92,7 @@ public class BookEdit3Fragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            bookAddActivity = (BookAddActivity)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");

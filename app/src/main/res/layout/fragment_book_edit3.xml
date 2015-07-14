@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="バーコードで検索する"
+            android:id="@+id/cameraOn"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
     </LinearLayout>

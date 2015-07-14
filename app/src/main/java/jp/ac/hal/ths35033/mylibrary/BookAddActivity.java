@@ -2,6 +2,7 @@ package jp.ac.hal.ths35033.mylibrary;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -90,6 +91,7 @@ public class BookAddActivity extends ActionBarActivity
         tabSpec3 = tabHost.newTabSpec("ISBNリーダー");
         tabSpec3.setIndicator("ISBNリーダー");
 
+        BookEdit3Fragment bookEdit3Fragment = new BookEdit3Fragment();
         // TabHost に追加
         tabHost.addTab(tabSpec3, BookEdit3Fragment.class, null);
 
@@ -194,5 +196,10 @@ public class BookAddActivity extends ActionBarActivity
                 break;
         }
         return true;
+    }
+
+    public void move(){
+        Intent intent = new Intent(this, CameraPreviewActivity.class);
+        startActivity(intent);
     }
 }
