@@ -7,18 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BookEdit1Fragment.OnFragmentInteractionListener} interface
+ * {@link BookEdit3Fragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BookEdit1Fragment#newInstance} factory method to
+ * Use the {@link BookEdit3Fragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookEdit1Fragment extends Fragment {
+public class BookEdit3Fragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -36,11 +35,11 @@ public class BookEdit1Fragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BookEdit1Fragment.
+     * @return A new instance of fragment BookEdit3Fragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BookEdit1Fragment newInstance(String param1, String param2) {
-        BookEdit1Fragment fragment = new BookEdit1Fragment();
+    public static BookEdit3Fragment newInstance(String param1, String param2) {
+        BookEdit3Fragment fragment = new BookEdit3Fragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -48,7 +47,7 @@ public class BookEdit1Fragment extends Fragment {
         return fragment;
     }
 
-    public BookEdit1Fragment() {
+    public BookEdit3Fragment() {
         // Required empty public constructor
     }
 
@@ -64,27 +63,8 @@ public class BookEdit1Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_book_edit1, container, false);
-
-        if (getArguments().getSerializable("book") != null){
-            Book book = (Book)getArguments().getSerializable("book");
-            EditText titleEdit = (EditText) view.findViewById(R.id.titleEdit);
-            EditText authorEdit = (EditText) view.findViewById(R.id.authorEdit);
-            EditText pubEdit = (EditText) view.findViewById(R.id.publisherNameEdit);
-            EditText saleEdit = (EditText) view.findViewById(R.id.salesDateEdit);
-            EditText captEdit = (EditText) view.findViewById(R.id.itemCaptionEdit);
-
-
-            titleEdit.setText(book.getTitle());
-            authorEdit.setText(book.getAuthor());
-            pubEdit.setText(book.getPublisherName());
-            saleEdit.setText(book.getSalesDate());
-            captEdit.setText(book.getItemCaption());
-        }
-
         // Inflate the layout for this fragment
-        return view;
+        return inflater.inflate(R.layout.fragment_book_edit3, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
