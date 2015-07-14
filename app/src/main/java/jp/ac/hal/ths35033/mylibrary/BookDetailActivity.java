@@ -3,6 +3,7 @@ package jp.ac.hal.ths35033.mylibrary;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -36,6 +37,8 @@ public class BookDetailActivity extends ActionBarActivity {
             actionBar.setDisplayShowTitleEnabled(true);
             // iconを表示するか
             actionBar.setDisplayShowHomeEnabled(true);
+            Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+            actionBar.setBackgroundDrawable(drawable);
             actionBar.show();
         }
 

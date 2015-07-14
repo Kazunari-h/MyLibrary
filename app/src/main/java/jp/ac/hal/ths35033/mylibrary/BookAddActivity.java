@@ -2,6 +2,7 @@ package jp.ac.hal.ths35033.mylibrary;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTabHost;
@@ -9,19 +10,27 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 
 public class BookAddActivity extends ActionBarActivity
         implements FragmentTabHost.OnTabChangeListener,
+            View.OnTouchListener,
             BookEdit1Fragment.OnFragmentInteractionListener,
             BookEdit2Fragment.OnFragmentInteractionListener,
             BookEdit3Fragment.OnFragmentInteractionListener {
 
+    FragmentTabHost tabHost;
     Book book;
+    float lastTouchX;
+    float currentX;
+    int target = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +54,15 @@ public class BookAddActivity extends ActionBarActivity
             actionBar.setDisplayShowTitleEnabled(true);
             // iconを表示するか
             actionBar.setDisplayShowHomeEnabled(true);
+            Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+            actionBar.setBackgroundDrawable(drawable);
             actionBar.show();
         }
 
 
         // FragmentTabHost を取得する
-        FragmentTabHost tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
+        tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
+        tabHost.setOnTouchListener(this);
         tabHost.setup(this, getSupportFragmentManager(), R.id.container);
 
         TabHost.TabSpec tabSpec1, tabSpec2, tabSpec3;
@@ -77,11 +89,18 @@ public class BookAddActivity extends ActionBarActivity
         // TabSpec を生成する
         tabSpec3 = tabHost.newTabSpec("ISBNリーダー");
         tabSpec3.setIndicator("ISBNリーダー");
+
         // TabHost に追加
         tabHost.addTab(tabSpec3, BookEdit3Fragment.class, null);
 
+        tabHost.setCurrentTab(0);
         // リスナー登録
         tabHost.setOnTabChangedListener(this);
+
+        for(int i=0;i<tabHost.getTabWidget().getChildCount();i++) {
+            TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
+            tv.setTextColor(getResources().getColor(R.color.colorWhite));
+        }
     }
 
     @Override
@@ -112,7 +131,16 @@ public class BookAddActivity extends ActionBarActivity
 
     @Override
     public void onTabChanged(String tabId) {
-        System.out.println("******************************");
+        System.out.println("******************************"+tabId);
+
+        if (tabId.equals("検索")){
+            target = 1;
+        }else if (tabId.equals("直接入力")){
+            target = 0;
+        }else {
+            target = 2;
+        }
+
 
     }
 
@@ -120,4 +148,52 @@ public class BookAddActivity extends ActionBarActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        switch (event.getAction()) {
+
+            case MotionEvent.ACTION_DOWN:
+                lastTouchX = event.getX();
+                break;
+
+            case MotionEvent.ACTION_UP:
+                currentX = event.getX();
+                if (lastTouchX < currentX) {
+                    //前に戻る動作
+                    target = ++target % 3;
+                    System.out.println(target);
+                    tabHost.setCurrentTab(target);
+                }
+                if (lastTouchX > currentX) {
+                    //次に移動する動作
+                    target--;
+                    if (target < 0){
+                        target = 2;
+                    }
+                    System.out.println(target);
+                    tabHost.setCurrentTab(target);
+                }
+                break;
+
+            case MotionEvent.ACTION_CANCEL:
+                currentX = event.getX();
+                if (lastTouchX < currentX) {
+                    //前に戻る動作
+                    target = ++target % 3;
+                    tabHost.setCurrentTab(target);
+                }
+                if (lastTouchX > currentX) {
+                    //次に移動する動作
+                    target--;
+                    if (target < 0){
+                        target = 2;
+                    }
+                    tabHost.setCurrentTab(target);
+                }
+                break;
+        }
+        return true;
+    }
+
 }
