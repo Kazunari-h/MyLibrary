@@ -1,18 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <!-- タイトルバーの背景色 -->
-        <!--<item name="android:background">#00BFFF</item>-->
-        <!-- タイトルバーの文字スタイル -->
-        <item name="android:titleTextStyle">@style/titleTextStyle</item>
+        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
+        <item name="android:actionBarItemBackground">@color/color1</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="titleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <!-- タイトルバーの文字色 -->
-        <item name="android:textColor">#FFFFFF</item>
-        <!-- タイトルバーの文字スタイル -->
-        <item name="android:textStyle">italic</item>
+    <style name="ActionBarStyle" parent="MyTheme">
+        <item name="android:background">@color/color4</item>
     </style>
+
+    <color name="color4">#8822ff</color>
+    <color name="color5">#ffff89c4</color>
+    <color name="color6">#ffAAAAAA</color>
 </resources>

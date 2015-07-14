@@ -27,4 +27,11 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="barcodeTitle">ISBNとは？</string>
+    <string name="barcodeText">書籍の裏表紙などに印刷されている番号、バーコードです。下のボタンを押し、カメラを起動して読み込んでください。</string>
+    <string name="searchTitle">書籍検索</string>
+    <string name="searchText">楽天ブックス書籍検索を利用して持ってる本を検索します。フォームに検索ワードを入れて検索してください。</string>
+    <string name="formTitle">検索ワード</string>
+    <string name="searchBtnText">書籍検索</string>
+    <string name="formHint">16文字以内で入力</string>
 </resources>

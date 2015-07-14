@@ -3,6 +3,7 @@ package jp.ac.hal.ths35033.mylibrary;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -35,10 +36,13 @@ public class BookListActivity extends ActionBarActivity {
             ActionBar actionBar = this.getSupportActionBar();
             // 戻るボタンを表示するかどうか('<' <- こんなやつ)
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
             // タイトルを表示するか
             actionBar.setDisplayShowTitleEnabled(true);
             // iconを表示するか
             actionBar.setDisplayShowHomeEnabled(true);
+            Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+            actionBar.setBackgroundDrawable(drawable);
             actionBar.show();
         }
 
@@ -196,3 +200,4 @@ public class BookListActivity extends ActionBarActivity {
         return b;
     }
 }
+

@@ -48,7 +48,6 @@ public class TabListener<T extends Fragment> implements ActionBar.TabListener {
                 FragmentManager fm = mActivity.getFragmentManager();
                 fm.beginTransaction().attach(mFragment).commit();
             }
-
         }
     }
     /**

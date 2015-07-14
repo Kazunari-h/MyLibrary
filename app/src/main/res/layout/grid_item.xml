@@ -5,21 +5,62 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#990099"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:src="@drawable/search"/>
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color1"
+            android:src="@drawable/search"
+            android:id="@+id/imageView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="100%"
+            android:textSize="12dp"
+            android:padding="4dp"
+            android:background="@drawable/button_corners"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignBottom="@+id/imageView"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
 
-    <TextView
+
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/title"
-        android:text="title"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/title"
+            android:layout_weight="1"
+            android:text="title"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:padding="3dp"
+            android:textSize="8dp"
+            android:background="@color/color2"
+            android:textAlignment="center"
+            android:id="@+id/haveFlgView"
+            android:text="貸出"/>
+
+    </LinearLayout>
 
 </LinearLayout>
