@@ -2,120 +2,202 @@ package jp.ac.hal.ths35033.mylibrary;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;
 import android.hardware.Camera.PreviewCallback;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.PlanarYUVLuminanceSource;
+import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class CameraPreviewActivity extends Activity{
+public class CameraPreviewActivity extends Activity implements SurfaceHolder.Callback,
+        AutoFocusCallback, PreviewCallback {
 
-    private SurfaceView mSurfaceView;
+    private final String TAG = "SampleQrActivity";
+
+    private static final int MIN_PREVIEW_PIXELS = 470 * 320;
+    private static final int MAX_PREVIEW_PIXELS = 1280 * 720;
     private Camera mCamera;
+    private SurfaceView mSurfaceView;
+    private Point mPreviewSize;
+    private float mPreviewWidthRatio;
+    private float mPreviewHeightRatio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSurfaceView = new SurfaceView(this);
-        mSurfaceView.setOnClickListener(onClickListener);
-        setContentView(mSurfaceView);
+        setContentView(R.layout.activity_camera_preview);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        initCamera();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        SurfaceHolder holder = mSurfaceView.getHolder();
-        holder.addCallback(callback);
+        mCamera = Camera.open();
+        setPreviewSize();
     }
 
-    private SurfaceHolder.Callback callback = new SurfaceHolder.Callback() {
-        @Override
-        public void surfaceCreated(SurfaceHolder holder) {
-            // 生成されたとき
-            mCamera = Camera.open();
-            try {
-                // プレビューをセットする
-                mCamera.setPreviewDisplay(holder);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        @Override
-        public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            // 変更されたとき
-            Camera.Parameters parameters = mCamera.getParameters();
-            List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
-            Camera.Size previewSize = previewSizes.get(0);
-            parameters.setPreviewSize(previewSize.width, previewSize.height);
-            // width, heightを変更する
-            mCamera.setParameters(parameters);
-            mCamera.startPreview();
-        }
-        @Override
-        public void surfaceDestroyed(SurfaceHolder holder) {
-            // 破棄されたとき
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mCamera != null) {
             mCamera.release();
             mCamera = null;
         }
-    };
+    }
 
-    private OnClickListener onClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            // オートフォーカス
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        try {
             if (mCamera != null) {
-                mCamera.autoFocus(autoFocusCallback);
+                mCamera.setPreviewDisplay(holder);
+            }
+        } catch (IOException exception) {
+            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
+        }
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        if (mCamera != null) {
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(mPreviewSize.x, mPreviewSize.y);
+            mCamera.setParameters(parameters);
+            mCamera.startPreview();
+        }
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        if (mCamera != null) {
+            mCamera.stopPreview();
+        }
+    }
+
+    private void initCamera() {
+        mSurfaceView = (SurfaceView) findViewById(R.id.preview);
+        SurfaceHolder holder = mSurfaceView.getHolder();
+        holder.addCallback(this);
+    }
+
+    private void setPreviewSize() {
+        Camera.Parameters parameters = mCamera.getParameters();
+        List<Size> rawPreviewSizes = parameters.getSupportedPreviewSizes();
+        List<Size> supportPreviewSizes = new ArrayList<Size>(rawPreviewSizes);
+        Collections.sort(supportPreviewSizes, new Comparator<Size>() {
+            @Override
+            public int compare(Size lSize, Size rSize) {
+                int lPixels = lSize.width * lSize.height;
+                int rPixels = rSize.width * rSize.height;
+                if (rPixels < lPixels) {
+                    return -1;
+                }
+                if (rPixels > lPixels) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+        WindowManager manager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        int screenWidth = display.getWidth();
+        int screenHeight = display.getHeight();
+        float screenAspectRatio = (float) screenWidth / (float) screenHeight;
+        Point bestSize = null;
+        float diff = Float.POSITIVE_INFINITY;
+        for (Size supportPreviewSize : supportPreviewSizes) {
+            int supportWidth = supportPreviewSize.width;
+            int supportHeight = supportPreviewSize.height;
+            int pixels = supportWidth * supportHeight;
+            if (pixels < MIN_PREVIEW_PIXELS || pixels > MAX_PREVIEW_PIXELS) {
+                continue;
+            }
+            boolean isPortrait = supportWidth < supportHeight;
+            int previewWidth = isPortrait ? supportHeight : supportWidth;
+            int previewHeight = isPortrait ? supportWidth : supportHeight;
+            if (previewWidth == screenWidth && previewHeight == screenHeight) {
+                mPreviewSize = new Point(supportWidth, supportHeight);
+                mPreviewWidthRatio = 1;
+                mPreviewHeightRatio = 1;
+                return;
+            }
+            float aspectRatio = (float) previewWidth / (float) previewHeight;
+            float newDiff = Math.abs(aspectRatio - screenAspectRatio);
+            if (newDiff < diff) {
+                bestSize = new Point(supportWidth, supportHeight);
+                diff = newDiff;
             }
         }
-    };
-
-    private AutoFocusCallback autoFocusCallback = new AutoFocusCallback() {
-        @Override
-        public void onAutoFocus(boolean success, Camera camera) {
-            if (success) {
-                // 現在のプレビューをデータに変換
-                camera.setOneShotPreviewCallback(previewCallback);
-            }
+        if (bestSize == null) {
+            Size defaultSize = parameters.getPreviewSize();
+            bestSize = new Point(defaultSize.width, defaultSize.height);
         }
-    };
+        mPreviewSize = bestSize;
+        mPreviewWidthRatio = (float) mPreviewSize.x / (float) screenWidth;
+        mPreviewHeightRatio = (float) mPreviewSize.y / (float) screenHeight;
+    }
 
-    private PreviewCallback previewCallback = new PreviewCallback() {
-        @Override
-        public void onPreviewFrame(byte[] data, Camera camera) {
-            // TODO バーコード読み取り
-            // 読み込む範囲
-            int previewWidth = camera.getParameters().getPreviewSize().width;
-            int previewHeight = camera.getParameters().getPreviewSize().height;
-
-            // プレビューデータから BinaryBitmap を生成
-            PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(
-                    data, previewWidth, previewHeight, 0, 0, previewWidth, previewHeight, false);
+    @Override
+    public void onPreviewFrame(byte[] data, Camera camera) {
+        Result rawResult = null;
+        View target = (View) findViewById(R.id.target);
+        int left = (int) (target.getLeft() * mPreviewWidthRatio);
+        int top = (int) (target.getTop() * mPreviewHeightRatio);
+        int width = (int) (target.getWidth() * mPreviewWidthRatio);
+        int height = (int) (target.getHeight() * mPreviewHeightRatio);
+        PlanarYUVLuminanceSource source = new PlanarYUVLuminanceSource(data, mPreviewSize.x,
+                mPreviewSize.y, left, top, width, height, false);
+        if (source != null) {
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
-            // バーコードを読み込む
-            MultiFormatReader reader = new MultiFormatReader();
-            Result result = null;
+            MultiFormatReader multiFormatReader = new MultiFormatReader();
             try {
-                result = reader.decode(bitmap);
-                String text = result.getText();
-                System.out.println(text);
-                Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Not Found", Toast.LENGTH_SHORT).show();
+                rawResult = multiFormatReader.decode(bitmap);
+                Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG)
+                        .show();
+            } catch (ReaderException re) {
+                Toast.makeText(getApplicationContext(), "read error: " + re.getMessage(),
+                        Toast.LENGTH_LONG).show();
             }
         }
-    };
+    }
 
+    @Override
+    public void onAutoFocus(boolean success, Camera camera) {
+        if (success) {
+            mCamera.setOneShotPreviewCallback(this);
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (mCamera != null) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                mCamera.autoFocus(this);
+            }
+        }
+        return super.onTouchEvent(event);
+    }
 }

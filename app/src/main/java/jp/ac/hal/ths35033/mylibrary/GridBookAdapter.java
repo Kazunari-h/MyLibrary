@@ -46,6 +46,7 @@ public class GridBookAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.grid_item,parent,false);
         ((TextView)convertView.findViewById(R.id.title)).setText(bookList.get(position).getTitle());
+        ((TextView)convertView.findViewById(R.id.lendingText)).setText(bookList.get(position).getRate()+"%");
         return convertView;
     }
 }

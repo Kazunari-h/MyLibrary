@@ -1,8 +1,11 @@
 package jp.ac.hal.ths35033.mylibrary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -15,6 +18,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -109,12 +115,6 @@ public class BookListActivity extends ActionBarActivity {
                 //文字列を連結させるクラス
                 StringBuilder strbTotal = new StringBuilder();
                 ArrayList<Book> list = new ArrayList<>();
-//                for (int i  = 0 ; i < 20 ; i++ ){
-//                    Book b = new Book();
-//                    b.setTitle("BOOK"+i);
-//                    b.setItemURL("https://www.google.co.jp");
-//                    list.add(b);
-//                }
 
                 //csr.getCOunt()でcsrの要素数を取得し、その要素数分繰り返す。
                 for(int i = 0; i < csr.getCount(); i++){
@@ -199,5 +199,21 @@ public class BookListActivity extends ActionBarActivity {
         }
         return b;
     }
+
+    //内部ストレージから、画像ファイルを読み込む(Android 用)
+    public static final Bitmap loadBitmapLocalStorage(String fileName, Context context) throws IOException, FileNotFoundException {
+        BufferedInputStream bis = null;
+        try {
+            bis = new BufferedInputStream(context.openFileInput(fileName));
+            return BitmapFactory.decodeStream(bis);
+        } finally {
+            try {
+                bis.close();
+            } catch (Exception e) {
+                //IOException, NullPointerException
+            }
+        }
+    }
+
 }
 

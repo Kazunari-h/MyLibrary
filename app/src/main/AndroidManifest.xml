@@ -3,7 +3,7 @@
     package="jp.ac.hal.ths35033.mylibrary" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA">
+    <uses-permission android:name="android.permission.CAMERA" >
     </uses-permission>
 
     <application
@@ -40,6 +40,10 @@
         <activity
             android:name=".CameraPreviewActivity"
             android:label="@string/title_activity_camera_preview" >
+        </activity>
+        <activity
+            android:name=".BookAddCompleteActivity"
+            android:label="@string/title_activity_book_add_complete" >
         </activity>
     </application>
 
