@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 
@@ -28,7 +29,19 @@ public class BookEdit1Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Book book = null;
+
+    private BookAddActivity bookAddActivity;
+
     private OnFragmentInteractionListener mListener;
+
+    Button button ;
+    EditText titleEdit ;
+    EditText authorEdit ;
+    EditText pubEdit ;
+    EditText saleEdit ;
+    EditText captEdit ;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -66,22 +79,58 @@ public class BookEdit1Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_book_edit1, container, false);
+        button = (Button)view.findViewById(R.id.addButton);
+        titleEdit = (EditText) view.findViewById(R.id.titleEdit);
+        authorEdit = (EditText) view.findViewById(R.id.authorEdit);
+        pubEdit = (EditText) view.findViewById(R.id.publisherNameEdit);
+        saleEdit = (EditText) view.findViewById(R.id.salesDateEdit);
+        captEdit = (EditText) view.findViewById(R.id.itemCaptionEdit);
 
         if (getArguments().getSerializable("book") != null){
-            Book book = (Book)getArguments().getSerializable("book");
-            EditText titleEdit = (EditText) view.findViewById(R.id.titleEdit);
-            EditText authorEdit = (EditText) view.findViewById(R.id.authorEdit);
-            EditText pubEdit = (EditText) view.findViewById(R.id.publisherNameEdit);
-            EditText saleEdit = (EditText) view.findViewById(R.id.salesDateEdit);
-            EditText captEdit = (EditText) view.findViewById(R.id.itemCaptionEdit);
-
-
+            book = (Book)getArguments().getSerializable("book");
             titleEdit.setText(book.getTitle());
             authorEdit.setText(book.getAuthor());
             pubEdit.setText(book.getPublisherName());
             saleEdit.setText(book.getSalesDate());
             captEdit.setText(book.getItemCaption());
+            button.setText("更新");
         }
+
+
+        button.setOnClickListener(v -> {
+
+            Book b = book;
+            //登録ボタン押したら
+            if (book != null) {
+                //データベース更新
+                b.setTitle(titleEdit.getText().toString());
+                b.setAuthor(authorEdit.getText().toString());
+                b.setPublisherName(pubEdit.getText().toString());
+                b.setSalesDate(saleEdit.getText().toString());
+                b.setItemCaption(captEdit.getText().toString());
+                if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
+                    setEditClear();
+                    bookAddActivity.updateDispTran(b);
+                }else{
+                    //エラー処理
+                }
+
+            }else{
+                //データベース新規登録
+
+                b.setTitle(titleEdit.getText().toString());
+                b.setAuthor(authorEdit.getText().toString());
+                b.setPublisherName(pubEdit.getText().toString());
+                b.setSalesDate(saleEdit.getText().toString());
+                b.setItemCaption(captEdit.getText().toString());
+                if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
+                    setEditClear();
+                    bookAddActivity.insertDispTran(b);
+                }else{
+                    //エラー処理
+                }
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;
@@ -99,6 +148,7 @@ public class BookEdit1Fragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            bookAddActivity = (BookAddActivity)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -124,6 +174,16 @@ public class BookEdit1Fragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+    public void setEditClear(){
+        book = null;
+        titleEdit.setText("");
+        authorEdit.setText("");
+        pubEdit.setText("");
+        saleEdit.setText("");
+        captEdit.setText("");
+        button.setText("登録");
     }
 
 }

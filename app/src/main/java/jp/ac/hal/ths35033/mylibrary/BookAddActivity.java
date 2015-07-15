@@ -2,6 +2,9 @@ package jp.ac.hal.ths35033.mylibrary;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +20,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 
 
 public class BookAddActivity extends ActionBarActivity
@@ -90,6 +95,7 @@ public class BookAddActivity extends ActionBarActivity
         tabSpec3 = tabHost.newTabSpec("ISBNリーダー");
         tabSpec3.setIndicator("ISBNリーダー");
 
+        BookEdit3Fragment bookEdit3Fragment = new BookEdit3Fragment();
         // TabHost に追加
         tabHost.addTab(tabSpec3, BookEdit3Fragment.class, null);
 
@@ -195,4 +201,44 @@ public class BookAddActivity extends ActionBarActivity
         }
         return true;
     }
+
+    public void move(){
+        Intent intent = new Intent(this, CameraPreviewActivity.class);
+        startActivity(intent);
+    }
+
+    public void insertDispTran(Book b){
+        Intent intent = new Intent(this,BookAddCompleteActivity.class);
+        intent.putExtra("book", b);
+        startActivity(intent);
+    }
+
+    public void updateDispTran(Book b){
+        Intent intent = new Intent(this,BookAddCompleteActivity.class);
+        intent.putExtra("book", b);
+        intent.putExtra("update", "update");
+        startActivity(intent);
+    }
+
+    //内部ストレージに、画像ファイルを保存する(png) (Android 用)
+    public static final boolean savePngLocalStorage(String fileName, Bitmap bitmap, Context context) throws IOException {
+        BufferedOutputStream bos = null;
+        Bitmap tmp = null;
+        try {
+            bos = new BufferedOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE)); //他アプリアクセス不可
+            tmp = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+            return tmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
+        } finally {
+            if (tmp != null) {
+                tmp.recycle();
+                tmp = null;
+            }
+            try {
+                bos.close();
+            } catch (Exception e) {
+                //IOException, NullPointerException
+            }
+        }
+    }
+
 }

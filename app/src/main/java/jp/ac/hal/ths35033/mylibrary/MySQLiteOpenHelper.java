@@ -36,7 +36,6 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
         //==== 表示形式を設定 ====//
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
 
-
         /*
         書籍タイトル title
         書籍タイトルカナ titleKana
