@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color1">#8822ff</color>
-    <color name="color2">#ffff89c4</color>
-    <color name="color3">#ffAAAAAA</color>
-    <color name="colorWhite">#FFF</color>
-</resources>  
+    <color name="color1">#572163</color>
+    <color name="color2">#ff94D2DB</color>
+    <color name="color3">#ffC98CD9</color>
+    <color name="color4">#FF94B2DB</color>
+    <color name="color5">#ffD0B071</color>
+    <color name="color6">#ff98DDA3</color>
+    <color name="color7">#FFD58182</color>
+    <color name="colorWhite">#FEFBFB</color>
+    <color name="colorBG">#572163</color>
+
+</resources>

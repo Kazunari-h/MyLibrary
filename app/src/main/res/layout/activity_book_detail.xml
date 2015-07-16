@@ -134,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:background="#990099"
-            android:src="@drawable/gear"
+            android:src="@drawable/noimage"
             android:layout_weight="1"/>
         <LinearLayout
             android:layout_width="match_parent"

@@ -4,31 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/screen"
+    android:background="@color/colorBG"
     tools:context=".MainActivity">
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/eiga"
+        android:src="@drawable/info"
         android:padding="20dp"
-        android:background="@drawable/button_corners"
+        android:background="@drawable/button_corners_6"
         android:id="@+id/button1"
         />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/cd"
+        android:src="@drawable/gearflat"
         android:padding="20dp"
-        android:background="@drawable/button_corners"
+        android:background="@drawable/button_corners_1"
         android:id="@+id/button3" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/rest"
+        android:src="@drawable/trash"
         android:padding="20dp"
-        android:background="@drawable/button_corners"
+        android:background="@drawable/button_corners_4"
         android:id="@+id/button4" />
 
     <ImageView
@@ -36,26 +37,26 @@
         android:layout_height="100dp"
         android:src="@drawable/book"
         android:padding="20dp"
-        android:background="@drawable/button_corners"
+        android:background="@drawable/button_corners_3"
         android:id="@+id/button5" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/game"
+        android:src="@drawable/search"
         android:padding="20dp"
-        android:background="@drawable/button_corners"
+        android:background="@drawable/button_corners_2"
         android:id="@+id/button6" />
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/wine"
+        android:src="@drawable/edit"
         android:padding="20dp"
         android:layout_centerInParent="true"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:background="@drawable/button_corners"
+        android:background="@drawable/button_corners_5"
         android:id="@+id/button7" />
 
     <ImageView

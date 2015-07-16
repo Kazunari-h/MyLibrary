@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class GridBookAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         convertView = layoutInflater.inflate(R.layout.grid_item,parent,false);
+        ImageView imageView = (ImageView)convertView.findViewById(R.id.itemImage);
         ((TextView)convertView.findViewById(R.id.title)).setText(bookList.get(position).getTitle());
         ((TextView)convertView.findViewById(R.id.lendingText)).setText(bookList.get(position).getRate()+"%");
         return convertView;
