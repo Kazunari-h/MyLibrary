@@ -45,6 +45,14 @@
             android:name=".BookAddCompleteActivity"
             android:label="@string/title_activity_book_add_complete" >
         </activity>
+        <activity
+            android:name=".BookResultListActivity"
+            android:label="@string/title_activity_book_result_list" >
+        </activity>
+        <activity
+            android:name=".BookResultItemActivity"
+            android:label="@string/title_activity_book_result_item" >
+        </activity>
     </application>
 
 </manifest>

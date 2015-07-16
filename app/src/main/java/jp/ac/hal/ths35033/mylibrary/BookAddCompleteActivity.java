@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,32 +17,48 @@ public class BookAddCompleteActivity extends ActionBarActivity {
 
     Book book;
 
+    TextView Msg;
+
+    final String errMsg = "エラーが発生しました。";
+    final String insertMsg = "登録が完了しました。";
+    final String updateMsg = "更新が完了しました。";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_add_complete);
 
+        Msg = (TextView)findViewById(R.id.completeMsg);
+
         book = (Book) getIntent().getSerializableExtra("book");
 
         if (book == null){
             //結果が受け取れなかった。
+            Msg.setText(errMsg);
         }else{
             if (getIntent().getSerializableExtra("update") == null){
                 //新規登録
+                Msg.setText(insertMsg);
+                insert();
             }else{
                 //更新
+                Msg.setText(updateMsg);
+                update();
             }
         }
 
     }
 
-    public void insert(SQLiteDatabase db) {
+    public void insert() {
         //==== 現在時刻を取得 ====//
         Date date = new Date();
         //==== 表示形式を設定 ====//
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
+        MySQLiteOpenHelper helper = null;
+        SQLiteDatabase db = null;
 
         try {
+            db = helper.getWritableDatabase();
             SQLiteStatement stmt = db.compileStatement("insert into book_table(title,titleKana,author,authorKana,publisherName,size,isbn,itemCaption,salesDate,itemPrice,itemURL,smallImageURL,haveFlg,lending,rate,updateddate) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
             //書籍タイトル title
             stmt.bindString(1, book.getTitle());
@@ -81,8 +98,15 @@ public class BookAddCompleteActivity extends ActionBarActivity {
 
         }catch (Exception e){
             e.printStackTrace();
-
             //テキストメッセージを書き換える処理
+            Msg.setText(errMsg);
+        } finally{
+            if (db != null) {
+                db.close();
+            }
+            if (helper != null){
+                helper.close();
+            }
         }
 
     }
@@ -105,6 +129,7 @@ public class BookAddCompleteActivity extends ActionBarActivity {
             //val.put("カラム名", );
             //書籍タイトル title
             val.put("title", book.getTitle());
+            System.out.println(book.getTitle());
             //書籍タイトルカナ titleKana
             val.put("titleKana", book.getTitleKana());
             //著者名	author
@@ -142,9 +167,8 @@ public class BookAddCompleteActivity extends ActionBarActivity {
             //テキストメッセージを書き換える処理
 
         }catch (Exception e){
-
             //テキストメッセージを書き換える処理
-
+            Msg.setText(errMsg);
         } finally{
             if (db != null) {
                 db.close();

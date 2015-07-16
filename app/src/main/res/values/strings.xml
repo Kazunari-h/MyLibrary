@@ -36,4 +36,6 @@
     <string name="formHint">16文字以内で入力</string>
     <string name="title_activity_camera_preview">CameraPreviewActivity</string>
     <string name="title_activity_book_add_complete">BookAddCompleteActivity</string>
+    <string name="title_activity_book_result_list">BookResultListActivity</string>
+    <string name="title_activity_book_result_item">BookResultItemActivity</string>
 </resources>
