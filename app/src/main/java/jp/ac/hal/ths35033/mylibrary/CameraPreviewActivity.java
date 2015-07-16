@@ -3,6 +3,7 @@ package jp.ac.hal.ths35033.mylibrary;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.hardware.Camera;
@@ -44,6 +45,7 @@ public class CameraPreviewActivity extends Activity implements SurfaceHolder.Cal
     private Point mPreviewSize;
     private float mPreviewWidthRatio;
     private float mPreviewHeightRatio;
+    boolean aBoolean = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class CameraPreviewActivity extends Activity implements SurfaceHolder.Cal
         setContentView(R.layout.activity_camera_preview);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         initCamera();
+
     }
 
     @Override
@@ -175,10 +178,20 @@ public class CameraPreviewActivity extends Activity implements SurfaceHolder.Cal
             MultiFormatReader multiFormatReader = new MultiFormatReader();
             try {
                 rawResult = multiFormatReader.decode(bitmap);
-                Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG)
-                        .show();
+                //成功
+                if (getIntent().getStringExtra("search") != null){
+                    Intent intent = new Intent(this,BookListActivity.class);
+                    intent.putExtra("ISBN",rawResult.getText());
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG)
+                            .show();
+                    //APIに問い合わせ
+                }
             } catch (ReaderException re) {
-                Toast.makeText(getApplicationContext(), "read error: " + re.getMessage(),
+                //失敗
+                Toast.makeText(getApplicationContext(), "read error: もう一度読み込んでください。",
                         Toast.LENGTH_LONG).show();
             }
         }
@@ -189,12 +202,18 @@ public class CameraPreviewActivity extends Activity implements SurfaceHolder.Cal
         if (success) {
             mCamera.setOneShotPreviewCallback(this);
         }
+        aBoolean = false;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mCamera != null) {
+            if (aBoolean) {
+                return true;
+            }
+
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                aBoolean = true;
                 mCamera.autoFocus(this);
             }
         }

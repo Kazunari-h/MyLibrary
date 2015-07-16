@@ -2,7 +2,7 @@
     <string name="app_name">MyLibrary</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">設定</string>
-    <string name="action_add">アイテム追加</string>
+    <string name="action_add">新規追加</string>
     <string name="action_del">アイテム削除</string>
     <string name="more">もっと見る</string>
     <string name="action_search">アイテム検索</string>
@@ -39,4 +39,9 @@
     <string name="title_activity_book_result_list">検索結果</string>
     <string name="title_activity_book_result_item">BookResultItemActivity</string>
     <string name="categorySize">コミック</string>
+    <string name="action_search_word">キーワード検索</string>
+    <string name="action_search_category">カテゴリ検索</string>
+    <string name="action_search_isbn">ISBN検索</string>
+    <string name="title_activity_book_delete_list">BookDeleteListActivity</string>
+    <string name="completeBtn">リストに戻る</string>
 </resources>

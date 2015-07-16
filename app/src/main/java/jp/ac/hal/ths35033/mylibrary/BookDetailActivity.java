@@ -1,5 +1,7 @@
 package jp.ac.hal.ths35033.mylibrary;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class BookDetailActivity extends ActionBarActivity {
@@ -117,6 +120,20 @@ public class BookDetailActivity extends ActionBarActivity {
             Intent intent = new Intent(this,BookAddActivity.class);
             intent.putExtra("book", book);
             startActivity(intent);
+            return true;
+        }else if (id == R.id.action_del) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getText(R.string.action_del))
+                    .setMessage(book.title + "を削除します。")
+                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(BookDetailActivity.this,"OK",Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    })
+                    .setPositiveButton("Cancel", null)
+                    .show();
             return true;
         }
 

@@ -53,6 +53,10 @@
             android:name=".BookResultItemActivity"
             android:label="@string/title_activity_book_result_item" >
         </activity>
+        <activity
+            android:name=".BookDeleteListActivity"
+            android:label="@string/title_activity_book_delete_list" >
+        </activity>
     </application>
 
 </manifest>
