@@ -100,7 +100,7 @@ public class BookAddActivity extends ActionBarActivity
         // TabHost に追加
         tabHost.addTab(tabSpec3, BookEdit3Fragment.class, null);
 
-        tabHost.setCurrentTab(0);
+        tabHost.setCurrentTab(1);
         // リスナー登録
         tabHost.setOnTabChangedListener(this);
 
@@ -205,6 +205,11 @@ public class BookAddActivity extends ActionBarActivity
 
     public void move(){
         Intent intent = new Intent(this, CameraPreviewActivity.class);
+        startActivity(intent);
+    }
+
+    public void apiAccess(){
+        Intent intent = new Intent(this, BookResultListActivity.class);
         startActivity(intent);
     }
 

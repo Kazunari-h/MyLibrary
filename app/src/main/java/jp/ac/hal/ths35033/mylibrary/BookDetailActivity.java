@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -124,11 +125,27 @@ public class BookDetailActivity extends ActionBarActivity {
         }else if (id == R.id.action_del) {
             new AlertDialog.Builder(this)
                     .setTitle(getText(R.string.action_del))
-                    .setMessage(book.title + "を削除します。")
+                    .setMessage(book.getTitle() + "を削除します。")
                     .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(BookDetailActivity.this,"OK",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(BookDetailActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                            MySQLiteOpenHelper dbh = null;
+                            SQLiteDatabase db = null;
+                            try {
+                                dbh = new MySQLiteOpenHelper(BookDetailActivity.this);
+                                db = dbh.getWritableDatabase();
+                                //delete
+                                db.delete("book_table", "_id=?", new String[]{String.valueOf(book.get_id())});
+                            } finally {
+                                //終了
+                                if (db != null) {
+                                    db.close();
+                                }
+                                if (dbh != null) {
+                                    dbh.close();
+                                }
+                            }
                             finish();
                         }
                     })

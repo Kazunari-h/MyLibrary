@@ -42,7 +42,6 @@ public class BookListActivity extends ActionBarActivity {
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GridView gv = (GridView) findViewById(R.id.grid01);
                 GridView gridView = (GridView) parent;
                 // クリックされたアイテムを取得します
                 Book item = (Book) gridView.getItemAtPosition(position);
@@ -131,7 +130,7 @@ public class BookListActivity extends ActionBarActivity {
                             else checkedItems.remove((Integer) which);
                         }
                     })
-                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("検索", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(BookListActivity.this,BookListActivity.class);

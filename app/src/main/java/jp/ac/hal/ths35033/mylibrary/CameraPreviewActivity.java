@@ -188,6 +188,7 @@ public class CameraPreviewActivity extends Activity implements SurfaceHolder.Cal
                     Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG)
                             .show();
                     //APIに問い合わせ
+
                 }
             } catch (ReaderException re) {
                 //失敗

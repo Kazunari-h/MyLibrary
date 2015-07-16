@@ -275,7 +275,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/jumppage"
         android:drawableLeft="@drawable/internet"
-        android:text="詳細ページを見る"
+        android:text="@string/webPage"
         android:gravity="center"
         android:layout_gravity="center"
         android:padding="20dp" />
