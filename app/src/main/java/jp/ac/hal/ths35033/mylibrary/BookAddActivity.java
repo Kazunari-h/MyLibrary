@@ -219,6 +219,7 @@ public class BookAddActivity extends ActionBarActivity
         intent.putExtra("book", b);
         intent.putExtra("update", "update");
         startActivity(intent);
+        finish();
     }
 
     //内部ストレージに、画像ファイルを保存する(png) (Android 用)
@@ -241,5 +242,5 @@ public class BookAddActivity extends ActionBarActivity
             }
         }
     }
-
 }
+

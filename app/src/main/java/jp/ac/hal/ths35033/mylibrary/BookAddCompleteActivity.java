@@ -1,12 +1,15 @@
 package jp.ac.hal.ths35033.mylibrary;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -23,11 +26,14 @@ public class BookAddCompleteActivity extends ActionBarActivity {
     final String insertMsg = "登録が完了しました。";
     final String updateMsg = "更新が完了しました。";
 
+    Button exit ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_add_complete);
 
+        exit = (Button)findViewById(R.id.completeBtn);
         Msg = (TextView)findViewById(R.id.completeMsg);
 
         book = (Book) getIntent().getSerializableExtra("book");
@@ -47,6 +53,14 @@ public class BookAddCompleteActivity extends ActionBarActivity {
             }
         }
 
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(BookAddCompleteActivity.this,BookListActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void insert() {

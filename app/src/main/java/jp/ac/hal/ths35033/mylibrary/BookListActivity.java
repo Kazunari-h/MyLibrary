@@ -1,6 +1,8 @@
 package jp.ac.hal.ths35033.mylibrary;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
 
 import java.io.BufferedInputStream;
@@ -36,26 +39,10 @@ public class BookListActivity extends ActionBarActivity {
 
         gv = (GridView)findViewById(R.id.grid01);
 
-        // ActionBarの設定
-        if (savedInstanceState == null) {
-            // ActionBarの取得
-            ActionBar actionBar = this.getSupportActionBar();
-            // 戻るボタンを表示するかどうか('<' <- こんなやつ)
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeButtonEnabled(true);
-            // タイトルを表示するか
-            actionBar.setDisplayShowTitleEnabled(true);
-            // iconを表示するか
-            actionBar.setDisplayShowHomeEnabled(true);
-            Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
-            actionBar.setBackgroundDrawable(drawable);
-            actionBar.show();
-        }
-
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GridView gv = (GridView)findViewById(R.id.grid01);
+                GridView gv = (GridView) findViewById(R.id.grid01);
                 GridView gridView = (GridView) parent;
                 // クリックされたアイテムを取得します
                 Book item = (Book) gridView.getItemAtPosition(position);
@@ -68,7 +55,44 @@ public class BookListActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        AccessDatabase();
+        // ActionBarの設定
+        // ActionBarの取得
+        ActionBar actionBar = this.getSupportActionBar();
+        // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeButtonEnabled(true);
+        // タイトルを表示するか
+        actionBar.setDisplayShowTitleEnabled(true);
+        // iconを表示するか
+        actionBar.setDisplayShowHomeEnabled(true);
+        Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+        actionBar.setBackgroundDrawable(drawable);
+        actionBar.show();
+
+        if (getIntent().getIntegerArrayListExtra("category") != null) {
+            ArrayList<Integer> categoryNum;
+            categoryNum = getIntent().getIntegerArrayListExtra("category");
+            String textSql = "";
+            for (int i = 0 ; i < categoryNum.size();i++){
+                if (i == 0) {
+                    textSql = textSql + "size='"+ (categoryNum.get(i)+1) +"'";
+                }else{
+                    textSql = textSql + " OR size='"+ (categoryNum.get(i)+1) +"'";
+                }
+            }
+            AccessDatabaseCategory(textSql);
+        }else if (getIntent().getStringExtra("ISBN") != null){
+            String ISBN;
+            ISBN = getIntent().getStringExtra("ISBN");
+            AccessDatabaseISBN(ISBN);
+        }else if (getIntent().getStringExtra("word") != null){
+            String keyWord;
+            keyWord = getIntent().getStringExtra("word");
+            AccessDatabaseKeyword(keyWord);
+        }else {
+            AccessDatabase();
+        }
+
     }
 
     @Override
@@ -90,6 +114,59 @@ public class BookListActivity extends ActionBarActivity {
             return true;
         } else if(id==android.R.id.home){
             finish();
+            return true;
+        }else if (id == R.id.action_good1){
+            Intent intent = new Intent(this,BookAddActivity.class);
+            startActivity(intent);
+            return true;
+        }else if (id == R.id.action_goods2_item2){
+            final String[] items = {"単行本", "文庫", "新書","全集/双書", "事典/辞典", "図鑑", "絵本","カセット/CD","コミック","その他"};
+            final ArrayList<Integer> checkedItems = new ArrayList<Integer>();
+            new AlertDialog.Builder(this)
+                    .setTitle(getText(R.string.action_search_category))
+                    .setMultiChoiceItems(items, null, new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                            if (isChecked) checkedItems.add(which);
+                            else checkedItems.remove((Integer) which);
+                        }
+                    })
+                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(BookListActivity.this,BookListActivity.class);
+                            intent.putIntegerArrayListExtra("category", checkedItems);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setPositiveButton("Cancel", null)
+                    .show();
+            return true;
+        }else if (id == R.id.action_goods2_item1){
+            //テキスト入力を受け付けるビューを作成します。
+            final EditText editView = new EditText(this);
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_info)
+                    .setTitle(getText(R.string.action_search_word))
+                    .setMessage("キーワードを入力してください。")
+                    .setView(editView)
+                    .setNegativeButton("検索", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(BookListActivity.this,BookListActivity.class);
+                            intent.putExtra("word", editView.getText().toString());
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setPositiveButton("Cancel", null)
+                    .show();
+            return true;
+        }else if (id == R.id.action_goods2_item3){
+            Intent intent = new Intent(BookListActivity.this,CameraPreviewActivity.class);
+            intent.putExtra("search", "search");
+            startActivity(intent);
             return true;
         }
 
@@ -119,7 +196,6 @@ public class BookListActivity extends ActionBarActivity {
                 //文字列を連結させるクラス
                 StringBuilder strbTotal = new StringBuilder();
                 ArrayList<Book> list = new ArrayList<>();
-
                 //csr.getCOunt()でcsrの要素数を取得し、その要素数分繰り返す。
                 for(int i = 0; i < csr.getCount(); i++){
                     //カラムの名前が順番に配列strsに格納される。
@@ -141,11 +217,138 @@ public class BookListActivity extends ActionBarActivity {
                 Log.e("err", "SQLException:" + er.toString());
                 er.printStackTrace();
             }
-
         }else{
             Log.d("err", "データが入っていません。");
         }
+    }
 
+    public void AccessDatabaseCategory(String textSql){
+
+        MySQLiteOpenHelper helper = new MySQLiteOpenHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        //dbにデータが格納されていれば、この処理が実行される。
+        if(db != null){
+            try{
+                //sql文
+                String sql = "SELECT * FROM book_table WHERE "+textSql+" ORDER BY _id ASC";
+                //データベースから取得したデータを、一件ずつCursorに格納する。(配列のようなもの)
+                Cursor csr = db.rawQuery(sql,null);
+                //データベースのカーソルを先頭に持って来る。
+                csr.moveToFirst();
+                //文字列を連結させるクラス
+                StringBuilder strbTotal = new StringBuilder();
+                ArrayList<Book> list = new ArrayList<>();
+                //csr.getCOunt()でcsrの要素数を取得し、その要素数分繰り返す。
+                for(int i = 0; i < csr.getCount(); i++){
+                    //カラムの名前が順番に配列strsに格納される。
+                    String[] strs = csr.getColumnNames();
+                    Book b = setBook(csr,strs);
+                    list.add(b);
+                    //csrの次の行を撮りに行く。
+                    csr.moveToNext();
+                }
+                //データベースの取得が終わったら、csrを閉じる。
+                csr.close();
+                GridBookAdapter adapter = new GridBookAdapter(this);
+                adapter.setBooKList(list);
+                gv.setAdapter(adapter);
+                //データベースをクローズさせる。
+                db.close();
+
+            }catch(Exception er){
+                Log.e("err", "SQLException:" + er.toString());
+                er.printStackTrace();
+            }
+        }else{
+            Log.d("err", "データが入っていません。");
+        }
+    }
+
+    public void AccessDatabaseKeyword(String keyword){
+
+        MySQLiteOpenHelper helper = new MySQLiteOpenHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        //dbにデータが格納されていれば、この処理が実行される。
+        if(db != null){
+            try{
+                //sql文
+                String sql = "SELECT * FROM book_table WHERE title LIKE '%' || ? || '%' OR itemCaption LIKE '%' || ? || '%' OR author LIKE '%' || ? || '%' ESCAPE '$'";
+                //データベースから取得したデータを、一件ずつCursorに格納する。(配列のようなもの)
+                Cursor csr = db.rawQuery(sql,new String[]{keyword,keyword,keyword});
+                //データベースのカーソルを先頭に持って来る。
+                csr.moveToFirst();
+                //文字列を連結させるクラス
+                StringBuilder strbTotal = new StringBuilder();
+                ArrayList<Book> list = new ArrayList<>();
+                //csr.getCOunt()でcsrの要素数を取得し、その要素数分繰り返す。
+                for(int i = 0; i < csr.getCount(); i++){
+                    //カラムの名前が順番に配列strsに格納される。
+                    String[] strs = csr.getColumnNames();
+                    Book b = setBook(csr,strs);
+                    list.add(b);
+                    //csrの次の行を撮りに行く。
+                    csr.moveToNext();
+                }
+                //データベースの取得が終わったら、csrを閉じる。
+                csr.close();
+                GridBookAdapter adapter = new GridBookAdapter(this);
+                adapter.setBooKList(list);
+                gv.setAdapter(adapter);
+                //データベースをクローズさせる。
+                db.close();
+
+            }catch(Exception er){
+                Log.e("err", "SQLException:" + er.toString());
+                er.printStackTrace();
+            }
+        }else{
+            Log.d("err", "データが入っていません。");
+        }
+    }
+
+    public void AccessDatabaseISBN(String ISBN){
+
+        MySQLiteOpenHelper helper = new MySQLiteOpenHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        //dbにデータが格納されていれば、この処理が実行される。
+        if(db != null){
+            try{
+                //sql文
+                String sql = "SELECT * FROM book_table WHERE isbn=? ";
+                //データベースから取得したデータを、一件ずつCursorに格納する。(配列のようなもの)
+                Cursor csr = db.rawQuery(sql,new String[]{ISBN});
+                //データベースのカーソルを先頭に持って来る。
+                csr.moveToFirst();
+                //文字列を連結させるクラス
+                StringBuilder strbTotal = new StringBuilder();
+                ArrayList<Book> list = new ArrayList<>();
+                //csr.getCOunt()でcsrの要素数を取得し、その要素数分繰り返す。
+                for(int i = 0; i < csr.getCount(); i++){
+                    //カラムの名前が順番に配列strsに格納される。
+                    String[] strs = csr.getColumnNames();
+                    Book b = setBook(csr,strs);
+                    list.add(b);
+                    //csrの次の行を撮りに行く。
+                    csr.moveToNext();
+                }
+                //データベースの取得が終わったら、csrを閉じる。
+                csr.close();
+                GridBookAdapter adapter = new GridBookAdapter(this);
+                adapter.setBooKList(list);
+                gv.setAdapter(adapter);
+                //データベースをクローズさせる。
+                db.close();
+
+            }catch(Exception er){
+                Log.e("err", "SQLException:" + er.toString());
+                er.printStackTrace();
+            }
+        }else{
+            Log.d("err", "データが入っていません。");
+        }
     }
 
     public Book setBook(Cursor csr ,String[] strs) throws SQLException,Exception {

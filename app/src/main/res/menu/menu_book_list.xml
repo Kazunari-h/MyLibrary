@@ -5,23 +5,45 @@
 
     <item
         android:id="@+id/action_good1"
-        android:icon="@drawable/edit"
+        android:icon="@drawable/monoeditw"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:title="@string/hello_world"/>
+        android:title="@string/action_add"/>
 
     <item
         android:id="@+id/action_good2"
-        android:icon="@drawable/search"
+        android:icon="@drawable/monosearch"
         android:orderInCategory="101"
         app:showAsAction="ifRoom"
-        android:title="@string/hello_world"/>
+        android:title="@string/action_search">
+        <menu>
+            <item
+                android:id="@+id/action_goods2_item1"
+                android:icon="@drawable/monosearchb"
+                android:orderInCategory="101"
+                app:showAsAction="ifRoom"
+                android:title="@string/action_search_word"/>
+            <item
+                android:id="@+id/action_goods2_item2"
+                android:icon="@drawable/monosearchb"
+                android:orderInCategory="101"
+                app:showAsAction="ifRoom"
+                android:title="@string/action_search_category"/>
+            <item
+                android:id="@+id/action_goods2_item3"
+                android:icon="@drawable/monosearchb"
+                android:orderInCategory="101"
+                app:showAsAction="ifRoom"
+                android:title="@string/action_search_isbn"/>
+        </menu>
+
+    </item>
 
     <item
         android:id="@+id/action_good3"
-        android:icon="@drawable/gearflat"
+        android:icon="@drawable/monogear"
         android:orderInCategory="102"
         app:showAsAction="ifRoom"
-        android:title="@string/hello_world"/>
+        android:title="@string/action_settings"/>
 
 </menu>
