@@ -1,10 +1,14 @@
 package jp.ac.hal.ths35033.mylibrary;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +16,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -181,6 +188,8 @@ public class BookAddCompleteActivity extends ActionBarActivity {
 
             //テキストメッセージを書き換える処理
 
+
+
         }catch (Exception e){
             //テキストメッセージを書き換える処理
             Msg.setText(errMsg);
@@ -215,4 +224,41 @@ public class BookAddCompleteActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void saveBitmap(Bitmap saveImage) throws IOException {
+        final String SAVE_DIR = "/MyPhoto/";
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + SAVE_DIR);
+        try{
+            if(!file.exists()){
+                file.mkdir();
+            }
+        }catch(SecurityException e){
+            e.printStackTrace();
+            throw e;
+        }
+
+        Date mDate = new Date();
+        SimpleDateFormat fileNameDate = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String fileName = fileNameDate.format(mDate) + ".jpg";
+        String AttachName = file.getAbsolutePath() + "/" + fileName;
+
+        try {
+            FileOutputStream out = new FileOutputStream(AttachName);
+            saveImage.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        // save index
+        ContentValues values = new ContentValues();
+        ContentResolver contentResolver = getContentResolver();
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put("_data", AttachName);
+        contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    }
+
 }

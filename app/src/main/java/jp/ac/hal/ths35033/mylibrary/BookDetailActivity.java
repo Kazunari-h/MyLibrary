@@ -6,22 +6,33 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class BookDetailActivity extends ActionBarActivity {
 
     Book book;
+    Map<Integer,String> map ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,22 +40,18 @@ public class BookDetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_book_detail);
         book = (Book) getIntent().getSerializableExtra("book");
 
-        // ActionBarの設定
-        if (savedInstanceState == null) {
-            // ActionBarの取得
-            ActionBar actionBar = this.getSupportActionBar();
-            actionBar.setTitle(book.title);
-            actionBar.setSubtitle(book.author);
-            // 戻るボタンを表示するかどうか('<' <- こんなやつ)
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            // タイトルを表示するか
-            actionBar.setDisplayShowTitleEnabled(true);
-            // iconを表示するか
-            actionBar.setDisplayShowHomeEnabled(true);
-            Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
-            actionBar.setBackgroundDrawable(drawable);
-            actionBar.show();
-        }
+        map = new HashMap<Integer, String>();
+        map.put(0,"なし");
+        map.put(1,"単行本");
+        map.put(2,"文庫");
+        map.put(3,"新書");
+        map.put(4,"全集/双書");
+        map.put(5,"事典/辞典");
+        map.put(6,"図鑑");
+        map.put(7,"絵本");
+        map.put(8,"カセット/CD");
+        map.put(9,"コミック");
+        map.put(10,"その他");
 
         TextView title      = (TextView)findViewById(R.id.title);
         TextView titleKana  = (TextView)findViewById(R.id.titleKana);
@@ -56,6 +63,8 @@ public class BookDetailActivity extends ActionBarActivity {
         TextView update     = (TextView)findViewById(R.id.updateddate);
         TextView lending    = (TextView)findViewById(R.id.lending);
         TextView haveFlg    = (TextView)findViewById(R.id.haveFlg);
+        TextView size       = (TextView)findViewById(R.id.size);
+        ImageView imageView = (ImageView)findViewById(R.id.imageD);
 
         title.setText(book.getTitle());
         titleKana.setText(book.getTitleKana());
@@ -68,11 +77,22 @@ public class BookDetailActivity extends ActionBarActivity {
         rate.setText(book.getRate() + "%");
         update.setText(book.getUpdate());
 
+        if (!book.getSmallImageURL().isEmpty()){
+            try {
+                imageView.setImageBitmap(loadBitmap(book));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         if(book.getHaveFlg() == 0){
             haveFlg.setText("所持中");
         }else{
             haveFlg.setText("貸出中");
         }
+
+        size.setText(map.get(book.getSize()));
 
         Button jump = (Button)findViewById(R.id.jumppage);
         jump.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +101,24 @@ public class BookDetailActivity extends ActionBarActivity {
                 jumpWeb(book.getItemURL());
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // ActionBarの取得
+        ActionBar actionBar = this.getSupportActionBar();
+        actionBar.setTitle(book.title);
+        actionBar.setSubtitle(book.author);
+        // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        // タイトルを表示するか
+        actionBar.setDisplayShowTitleEnabled(true);
+        // iconを表示するか
+        actionBar.setDisplayShowHomeEnabled(true);
+        Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+        actionBar.setBackgroundDrawable(drawable);
+        actionBar.show();
     }
 
     @Override
@@ -161,5 +199,20 @@ public class BookDetailActivity extends ActionBarActivity {
         Uri uri = Uri.parse(url);
         Intent i = new Intent(Intent.ACTION_VIEW,uri);
         startActivity(i);
+    }
+
+    public Bitmap loadBitmap(Book book) throws IOException {
+        final String SAVE_DIR = "/MyPhoto/";
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + SAVE_DIR);
+
+        String AttachName = file.getAbsolutePath() + "/" + book.getSmallImageURL();
+
+        try {
+            FileInputStream in = new FileInputStream(AttachName);
+            return BitmapFactory.decodeStream(in);
+        } catch(IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

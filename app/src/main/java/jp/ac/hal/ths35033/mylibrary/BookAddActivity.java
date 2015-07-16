@@ -245,6 +245,7 @@ public class BookAddActivity extends ActionBarActivity
                 bos.close();
             } catch (Exception e) {
                 //IOException, NullPointerException
+                e.printStackTrace();
             }
         }
     }

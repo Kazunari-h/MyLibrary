@@ -1,9 +1,12 @@
 package jp.ac.hal.ths35033.mylibrary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -50,9 +53,9 @@ public class BookResultListActivity extends ActionBarActivity {
                 "?";
 
 
-        if (getIntent().getStringExtra("keyword") != null){
-            rakutenApiUri = rakutenApiUri + "&title="+getIntent().getStringExtra("keyword");
-        }
+//        if (getIntent().getStringExtra("keyword") != null){
+//            rakutenApiUri = rakutenApiUri + "&title="+getIntent().getStringExtra("keyword");
+//        }
 
         if (getIntent().getStringExtra("ISBN") != null){
             rakutenApiUri = rakutenApiUri + "&isbn="+getIntent().getStringExtra("ISBN");
@@ -96,7 +99,7 @@ public class BookResultListActivity extends ActionBarActivity {
                         book.setSalesDate(event.getString("salesDate"));
                         book.setItemPrice(event.getInt("itemPrice"));
                         book.setItemURL(event.getString("itemUrl"));
-                        book.setSmallImageURL(event.getString("smallImageUrl"));
+                        book.setSmallImageURL(event.getString("largeImageUrl"));
 
                         bookList.add(book);
                     }
@@ -121,6 +124,17 @@ public class BookResultListActivity extends ActionBarActivity {
         // 処理を実行
         asyncJsonLoader.execute(rakutenApiUri);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 ListView listView = (ListView) parent;
+                // クリックされたアイテムを取得します
+                Book book = (Book) listView.getItemAtPosition(position);
+                Intent intent = new Intent(BookResultListActivity.this,BookResultItemActivity.class);
+                intent.putExtra("book",book);
+                startActivity(intent);
+            }
+        });
     }
 
     // エラーメッセージ表示

@@ -47,4 +47,6 @@
     <string name="completeBtn">リストに戻る</string>
     <string name="price">価格</string>
     <string name="webPage">WEBページを見る</string>
+    <string name="salesDate">発売日</string>
+    <string name="itemPrice">価格</string>
 </resources>

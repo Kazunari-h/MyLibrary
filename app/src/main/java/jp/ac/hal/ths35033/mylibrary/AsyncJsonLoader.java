@@ -16,7 +16,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class AsyncJsonLoader extends AsyncTask<String, Integer, JSONObject> {
+class AsyncJsonLoader extends AsyncTask<String, Integer, JSONObject> {
     public interface AsyncCallback {
         void preExecute();
         void postExecute(JSONObject result);
