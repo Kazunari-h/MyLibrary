@@ -49,6 +49,15 @@ public class BookResultListActivity extends ActionBarActivity {
                 "applicationId=" +
                 "?";
 
+
+        if (getIntent().getStringExtra("keyword") != null){
+            rakutenApiUri = rakutenApiUri + "&title="+getIntent().getStringExtra("keyword");
+        }
+
+        if (getIntent().getStringExtra("ISBN") != null){
+            rakutenApiUri = rakutenApiUri + "&isbn="+getIntent().getStringExtra("ISBN");
+        }
+
         listView = (ListView)findViewById(R.id.listView01);
 
         AsyncJsonLoader asyncJsonLoader = new AsyncJsonLoader(new AsyncJsonLoader.AsyncCallback() {

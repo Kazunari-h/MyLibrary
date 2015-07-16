@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 
 /**
@@ -28,6 +29,7 @@ public class BookEdit2Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private String keyword;
     private OnFragmentInteractionListener mListener;
 
     private BookAddActivity bookAddActivity;
@@ -68,10 +70,11 @@ public class BookEdit2Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_book_edit2, container, false);
+        keyword = ((EditText)view.findViewById(R.id.APIeditText)).getText().toString();
         ((Button)view.findViewById(R.id.APISearchBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bookAddActivity.apiAccess();
+                bookAddActivity.apiAccess(keyword);
             }
         });
         return view;

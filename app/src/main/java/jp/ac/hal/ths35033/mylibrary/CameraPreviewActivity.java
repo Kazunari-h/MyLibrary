@@ -185,10 +185,10 @@ public class CameraPreviewActivity extends Activity implements SurfaceHolder.Cal
                     startActivity(intent);
                     finish();
                 }else{
-                    Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG)
-                            .show();
                     //APIに問い合わせ
-
+                    Intent intent = new Intent(this, BookResultListActivity.class);
+                    intent.putExtra("ISBN",rawResult.getText());
+                    startActivity(intent);
                 }
             } catch (ReaderException re) {
                 //失敗

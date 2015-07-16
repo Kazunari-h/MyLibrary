@@ -208,8 +208,9 @@ public class BookAddActivity extends ActionBarActivity
         startActivity(intent);
     }
 
-    public void apiAccess(){
+    public void apiAccess(String keyword){
         Intent intent = new Intent(this, BookResultListActivity.class);
+        intent.putExtra("keyword",keyword);
         startActivity(intent);
     }
 
