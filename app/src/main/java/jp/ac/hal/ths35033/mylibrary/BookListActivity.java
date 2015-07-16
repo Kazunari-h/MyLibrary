@@ -52,8 +52,6 @@ public class BookListActivity extends ActionBarActivity {
             actionBar.show();
         }
 
-        AccessDatabase();
-
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,6 +63,12 @@ public class BookListActivity extends ActionBarActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AccessDatabase();
     }
 
     @Override
@@ -135,6 +139,7 @@ public class BookListActivity extends ActionBarActivity {
 
             }catch(Exception er){
                 Log.e("err", "SQLException:" + er.toString());
+                er.printStackTrace();
             }
 
         }else{
@@ -147,6 +152,9 @@ public class BookListActivity extends ActionBarActivity {
         Book b = new Book();
         for (int s = 0; s < strs.length; s++) {
             switch (strs[s]) {
+                case "_id":
+                    b.set_id(csr.getInt(s));
+                    break;
                 case "title":
                     b.setTitle(csr.getString(s));
                     break;

@@ -97,37 +97,39 @@ public class BookEdit1Fragment extends Fragment {
         }
 
 
-        button.setOnClickListener(v -> {
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Book b = book;
+                //登録ボタン押したら
+                if (book != null) {
+                    //データベース更新
+                    b.setTitle(titleEdit.getText().toString());
+                    b.setAuthor(authorEdit.getText().toString());
+                    b.setPublisherName(pubEdit.getText().toString());
+                    b.setSalesDate(saleEdit.getText().toString());
+                    b.setItemCaption(captEdit.getText().toString());
+                    if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
+                        setEditClear();
+                        bookAddActivity.updateDispTran(b);
+                    }else{
+                        //エラー処理
+                    }
 
-            Book b = book;
-            //登録ボタン押したら
-            if (book != null) {
-                //データベース更新
-                b.setTitle(titleEdit.getText().toString());
-                b.setAuthor(authorEdit.getText().toString());
-                b.setPublisherName(pubEdit.getText().toString());
-                b.setSalesDate(saleEdit.getText().toString());
-                b.setItemCaption(captEdit.getText().toString());
-                if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
-                    setEditClear();
-                    bookAddActivity.updateDispTran(b);
                 }else{
-                    //エラー処理
-                }
-
-            }else{
-                //データベース新規登録
-
-                b.setTitle(titleEdit.getText().toString());
-                b.setAuthor(authorEdit.getText().toString());
-                b.setPublisherName(pubEdit.getText().toString());
-                b.setSalesDate(saleEdit.getText().toString());
-                b.setItemCaption(captEdit.getText().toString());
-                if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
-                    setEditClear();
-                    bookAddActivity.insertDispTran(b);
-                }else{
-                    //エラー処理
+                    //データベース新規登録
+                    b = new Book();
+                    b.setTitle(titleEdit.getText().toString());
+                    b.setAuthor(authorEdit.getText().toString());
+                    b.setPublisherName(pubEdit.getText().toString());
+                    b.setSalesDate(saleEdit.getText().toString());
+                    b.setItemCaption(captEdit.getText().toString());
+                    if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
+                        setEditClear();
+                        bookAddActivity.insertDispTran(b);
+                    }else{
+                        //エラー処理
+                    }
                 }
             }
         });

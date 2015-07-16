@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">sample</string>
+    <string name="app_name">MyLibrary</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">設定</string>
     <string name="action_add">アイテム追加</string>
@@ -34,6 +34,9 @@
     <string name="formTitle">検索ワード</string>
     <string name="searchBtnText">書籍検索</string>
     <string name="formHint">16文字以内で入力</string>
-    <string name="title_activity_camera_preview">CameraPreviewActivity</string>
-    <string name="title_activity_book_add_complete">BookAddCompleteActivity</string>
+    <string name="title_activity_camera_preview">ISBNリーダー</string>
+    <string name="title_activity_book_add_complete">登録完了</string>
+    <string name="title_activity_book_result_list">検索結果</string>
+    <string name="title_activity_book_result_item">BookResultItemActivity</string>
+    <string name="categorySize">コミック</string>
 </resources>
