@@ -139,6 +139,7 @@ public class BookListActivity extends ActionBarActivity {
 
             }catch(Exception er){
                 Log.e("err", "SQLException:" + er.toString());
+                er.printStackTrace();
             }
 
         }else{

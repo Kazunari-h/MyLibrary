@@ -58,6 +58,7 @@ public class BookAddCompleteActivity extends ActionBarActivity {
         SQLiteDatabase db = null;
 
         try {
+            helper = new MySQLiteOpenHelper(this);
             db = helper.getWritableDatabase();
             SQLiteStatement stmt = db.compileStatement("insert into book_table(title,titleKana,author,authorKana,publisherName,size,isbn,itemCaption,salesDate,itemPrice,itemURL,smallImageURL,haveFlg,lending,rate,updateddate) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
             //書籍タイトル title

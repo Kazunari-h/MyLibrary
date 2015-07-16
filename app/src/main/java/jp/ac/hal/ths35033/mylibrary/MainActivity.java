@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
         button6 = (ImageView) findViewById(R.id.button6);
         button7 = (ImageView) findViewById(R.id.button7);
 
-        button2.setImageResource(R.drawable.touch);
+        button2.setImageResource(R.drawable.book);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                Intent intent = new Intent(MainActivity.this, BookAddActivity.class);
                 startActivity(intent);
             }
         });

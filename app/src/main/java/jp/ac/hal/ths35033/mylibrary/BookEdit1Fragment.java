@@ -118,6 +118,7 @@ public class BookEdit1Fragment extends Fragment {
 
                 }else{
                     //データベース新規登録
+                    b = new Book();
                     b.setTitle(titleEdit.getText().toString());
                     b.setAuthor(authorEdit.getText().toString());
                     b.setPublisherName(pubEdit.getText().toString());

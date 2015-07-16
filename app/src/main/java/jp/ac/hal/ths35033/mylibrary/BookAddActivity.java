@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -42,17 +41,19 @@ public class BookAddActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_add);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
         book = (Book) getIntent().getSerializableExtra("book");
-
-        Toast.makeText(this,book.getTitle(),Toast.LENGTH_LONG).show();
 
         // ActionBarの設定
         if (savedInstanceState == null) {
             // ActionBarの取得
             ActionBar actionBar = this.getSupportActionBar();
-            actionBar.setTitle(book.title);
-            actionBar.setSubtitle(book.author);
+
+            if (book != null) {
+                actionBar.setTitle(book.title);
+                actionBar.setSubtitle(book.author);
+            } else {
+                actionBar.setTitle("新規登録");
+            }
             // 戻るボタンを表示するかどうか('<' <- こんなやつ)
             actionBar.setDisplayHomeAsUpEnabled(true);
             // タイトルを表示するか

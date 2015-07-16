@@ -83,7 +83,12 @@ public class Book implements Serializable {
     }
 
     public String getTitle() {
-        return title;
+        if (title !=null) {
+            return title;
+        }else{
+            return "";
+
+        }
     }
 
     public void setTitle(String title) {
@@ -91,7 +96,11 @@ public class Book implements Serializable {
     }
 
     public String getTitleKana() {
-        return titleKana;
+        if (titleKana !=null) {
+            return titleKana;
+        }else{
+            return "";
+        }
     }
 
     public void setTitleKana(String titleKana) {
@@ -99,7 +108,12 @@ public class Book implements Serializable {
     }
 
     public String getAuthor() {
-        return author;
+        if (author !=null) {
+            return author;
+        }else{
+            return "";
+        }
+
     }
 
     public void setAuthor(String author) {
@@ -107,7 +121,11 @@ public class Book implements Serializable {
     }
 
     public String getAuthorKana() {
-        return authorKana;
+        if (authorKana !=null) {
+            return authorKana;
+        }else{
+            return "";
+        }
     }
 
     public void setAuthorKana(String authorKana) {
@@ -115,7 +133,11 @@ public class Book implements Serializable {
     }
 
     public String getPublisherName() {
-        return publisherName;
+        if (publisherName !=null) {
+            return publisherName;
+        }else{
+            return "";
+        }
     }
 
     public void setPublisherName(String publisherName) {
@@ -123,7 +145,11 @@ public class Book implements Serializable {
     }
 
     public String getItemCaption() {
-        return itemCaption;
+        if (itemCaption !=null) {
+            return itemCaption;
+        }else{
+            return "";
+        }
     }
 
     public void setItemCaption(String itemCaption) {
@@ -131,7 +157,11 @@ public class Book implements Serializable {
     }
 
     public String getSalesDate() {
-        return salesDate;
+        if (salesDate !=null) {
+            return salesDate;
+        }else{
+            return "";
+        }
     }
 
     public void setSalesDate(String salesDate) {
@@ -139,7 +169,11 @@ public class Book implements Serializable {
     }
 
     public String getItemURL() {
-        return itemURL;
+        if (itemURL !=null) {
+            return itemURL;
+        }else{
+            return "";
+        }
     }
 
     public void setItemURL(String itemURL) {
@@ -147,7 +181,11 @@ public class Book implements Serializable {
     }
 
     public String getSmallImageURL() {
-        return smallImageURL;
+        if (smallImageURL !=null) {
+            return smallImageURL;
+        }else{
+            return "";
+        }
     }
 
     public void setSmallImageURL(String smallImageURL) {
@@ -155,7 +193,11 @@ public class Book implements Serializable {
     }
 
     public String getLending() {
-        return lending;
+        if (lending !=null) {
+            return lending;
+        }else{
+            return "";
+        }
     }
 
     public void setLending(String lending) {
@@ -172,7 +214,11 @@ public class Book implements Serializable {
 
 
     public String getIsbn() {
-        return isbn;
+        if (isbn !=null) {
+            return isbn;
+        }else{
+            return "";
+        }
     }
 
     public void setIsbn(String isbn) {
