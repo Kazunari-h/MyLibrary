@@ -1,6 +1,7 @@
 package jp.ac.hal.ths35033.mylibrary;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -18,13 +19,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,12 +64,61 @@ public class BookDetailActivity extends ActionBarActivity {
         TextView authorKana = (TextView)findViewById(R.id.authorKana);
         TextView publisher  = (TextView)findViewById(R.id.publisherName);
         TextView itemCaption= (TextView)findViewById(R.id.itemCaption);
-        TextView rate       = (TextView)findViewById(R.id.rate);
-        TextView update     = (TextView)findViewById(R.id.updateddate);
+        final TextView rate       = (TextView)findViewById(R.id.rate);
+        final TextView update     = (TextView)findViewById(R.id.updateddate);
         TextView lending    = (TextView)findViewById(R.id.lending);
         TextView haveFlg    = (TextView)findViewById(R.id.haveFlg);
         TextView size       = (TextView)findViewById(R.id.size);
+        TextView salesDate  = (TextView)findViewById(R.id.salesDate);
+        TextView itemPrice  = (TextView)findViewById(R.id.itemPrice);
         ImageView imageView = (ImageView)findViewById(R.id.imageD);
+
+        LinearLayout FlgHaveFlg = (LinearLayout)findViewById(R.id.FlgHaveFlg);
+        LinearLayout Flglending = (LinearLayout)findViewById(R.id.Flglending);
+        LinearLayout Flgrate    = (LinearLayout)findViewById(R.id.Flgrate);
+
+        FlgHaveFlg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMsg();
+            }
+        });
+
+        Flglending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogMsg();
+            }
+        });
+
+        Flgrate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //テキスト入力を受け付けるビューを作成します。
+                final EditText editView = new EditText(BookDetailActivity.this);
+                new AlertDialog.Builder(BookDetailActivity.this)
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setTitle("進行度")
+                        .setMessage("読み進めた割合を％で入力してください。")
+                        .setView(editView)
+                        .setNegativeButton("更新", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    rateUpdate(Integer.parseInt(editView.getText().toString()));
+                                    Toast.makeText(BookDetailActivity.this,"更新しました。",Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(BookDetailActivity.this, BookListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }catch (NumberFormatException e){
+                                    Toast.makeText(BookDetailActivity.this,"数値を入力してください。",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        })
+                        .setPositiveButton("Cancel", null)
+                        .show();
+            }
+        });
 
         title.setText(book.getTitle());
         titleKana.setText(book.getTitleKana());
@@ -94,6 +148,15 @@ public class BookDetailActivity extends ActionBarActivity {
 
         size.setText(map.get(book.getSize()));
 
+        salesDate.setText(book.getSalesDate());
+        String price = "";
+        if (book.getItemPrice() >= 1000){
+            price = "¥" + ((int)book.getItemPrice()/1000) + "," + book.getItemPrice() % 1000 ;
+        }else {
+            price = "¥" + book.getItemPrice();
+        }
+        itemPrice.setText(price);
+
         Button jump = (Button)findViewById(R.id.jumppage);
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +183,101 @@ public class BookDetailActivity extends ActionBarActivity {
         actionBar.setBackgroundDrawable(drawable);
         actionBar.show();
     }
+
+    public void dialogMsg(){
+        //テキスト入力を受け付けるビューを作成します。
+        final EditText editView = new EditText(BookDetailActivity.this);
+        new AlertDialog.Builder(BookDetailActivity.this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("貸出フラグを更新します。")
+                .setMessage("貸出した相手の名前を入力してください。")
+                .setView(editView)
+                .setNegativeButton("更新", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        update(editView.getText().toString());
+                        Intent intent = new Intent(BookDetailActivity.this,BookListActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setPositiveButton("Cancel", null)
+                .show();
+    }
+
+    public void update(String text) {
+        //==== 現在時刻を取得 ====//
+        Date date = new Date();
+        //==== 表示形式を設定 ====//
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
+
+        MySQLiteOpenHelper helper = null;
+        SQLiteDatabase db = null;
+
+        try {
+            helper = new MySQLiteOpenHelper(this);
+            db = helper.getWritableDatabase();
+            //更新データ作成
+            ContentValues val = new ContentValues();
+            //所持フラグ
+            val.put("haveFlg", 1);
+            //貸出
+            val.put("lending", text);
+            //更新日
+            val.put("updateddate", sdf.format(date).toString());
+            //update
+            db.update("book_table", val, "_id=" + book.get_id(), null);
+
+            Toast.makeText(this,"更新が完了しました。",Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+            //テキストメッセージを書き換える処理
+            Toast.makeText(this,"エラーが発生しました。",Toast.LENGTH_SHORT).show();
+
+        } finally{
+            if (db != null) {
+                db.close();
+            }
+            if (helper != null){
+                helper.close();
+            }
+        }
+    }
+
+    public void rateUpdate(int num) {
+        //==== 現在時刻を取得 ====//
+        Date date = new Date();
+        //==== 表示形式を設定 ====//
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/M/d");
+
+        MySQLiteOpenHelper helper = null;
+        SQLiteDatabase db = null;
+
+        try {
+            helper = new MySQLiteOpenHelper(this);
+            db = helper.getWritableDatabase();
+            //更新データ作成
+            ContentValues val = new ContentValues();
+            val.put("rate", num);
+            //update
+            db.update("book_table", val, "_id=" + book.get_id(), null);
+
+            Toast.makeText(this,"更新が完了しました。",Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+            //テキストメッセージを書き換える処理
+            Toast.makeText(this,"エラーが発生しました。",Toast.LENGTH_SHORT).show();
+
+        } finally{
+            if (db != null) {
+                db.close();
+            }
+            if (helper != null){
+                helper.close();
+            }
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
