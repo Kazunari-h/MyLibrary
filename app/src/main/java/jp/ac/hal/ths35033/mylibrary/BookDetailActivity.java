@@ -28,6 +28,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -350,6 +351,15 @@ public class BookDetailActivity extends ActionBarActivity {
                     })
                     .setPositiveButton("Cancel", null)
                     .show();
+            return true;
+        }else if (id == R.id.action_tweet){
+            try {
+                String url = "http://twitter.com/share?text=" + URLEncoder.encode(book.getTitle()+"って本がいいよ！", "UTF-8");
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(intent);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             return true;
         }
 

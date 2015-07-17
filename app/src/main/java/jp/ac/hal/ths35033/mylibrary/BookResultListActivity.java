@@ -54,10 +54,10 @@ public class BookResultListActivity extends ActionBarActivity {
                 "sort=sales&" +
                 "hits=30&" +
                 "applicationId=" +
-                "?";
+                "1068070870366265356";
 
 
-        if (!getIntent().getStringExtra("keyword").isEmpty()){
+        if ( getIntent().getStringExtra("keyword") != null && !getIntent().getStringExtra("keyword").isEmpty()){
             try {
                 rakutenApiUri = rakutenApiUri + "&title="+ URLEncoder.encode(getIntent().getStringExtra("keyword").toString(),"UTF-8");
             } catch (UnsupportedEncodingException e) {
@@ -65,7 +65,7 @@ public class BookResultListActivity extends ActionBarActivity {
             }
         }
 
-        if (!getIntent().getStringExtra("ISBN").isEmpty()){
+        if (getIntent().getStringExtra("ISBN") != null && !getIntent().getStringExtra("ISBN").isEmpty()){
             rakutenApiUri = rakutenApiUri + "&isbn="+getIntent().getStringExtra("ISBN");
         }
 

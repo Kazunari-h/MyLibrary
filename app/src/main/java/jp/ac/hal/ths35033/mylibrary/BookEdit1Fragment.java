@@ -110,7 +110,7 @@ public class BookEdit1Fragment extends Fragment {
             public void onClick(View v) {
                 Book b = book;
                 //登録ボタン押したら
-                if (book != null) {
+                if (b != null) {
                     //データベース更新
                     b.setTitle(titleEdit.getText().toString());
                     b.setAuthor(authorEdit.getText().toString());
@@ -231,8 +231,8 @@ public class BookEdit1Fragment extends Fragment {
                     }
 
                     if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
-                        setEditClear();
                         bookAddActivity.insertDispTran(b);
+                        setEditClear();
                     }else{
                         //エラー処理
                     }

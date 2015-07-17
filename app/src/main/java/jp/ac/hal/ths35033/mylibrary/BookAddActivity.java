@@ -54,6 +54,7 @@ public class BookAddActivity extends ActionBarActivity
         setContentView(R.layout.activity_book_add);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         book = (Book) getIntent().getSerializableExtra("book");
+        getAction();
 
         // FragmentTabHost を取得する
         tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
@@ -89,7 +90,11 @@ public class BookAddActivity extends ActionBarActivity
         // TabHost に追加
         tabHost.addTab(tabSpec3, BookEdit3Fragment.class, null);
 
-        tabHost.setCurrentTab(1);
+        if (getIntent().getIntExtra("key", 0) != 0){
+            tabHost.setCurrentTab((Integer)getIntent().getIntExtra("key",0));
+        }else{
+            tabHost.setCurrentTab(0);
+        }
         // リスナー登録
         tabHost.setOnTabChangedListener(this);
 
@@ -102,7 +107,10 @@ public class BookAddActivity extends ActionBarActivity
     @Override
     protected void onResume() {
         super.onResume();
-        // ActionBarの取得
+        getAction();
+    }
+
+    public void getAction(){
         ActionBar actionBar = this.getSupportActionBar();
 
         if (book != null) {

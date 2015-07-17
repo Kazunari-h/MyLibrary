@@ -44,14 +44,13 @@ public class BookAddCompleteActivity extends ActionBarActivity {
 
         exit = (Button)findViewById(R.id.completeBtn);
         Msg = (TextView)findViewById(R.id.completeMsg);
-
         book = (Book) getIntent().getSerializableExtra("book");
 
         if (book == null){
             //結果が受け取れなかった。
             Msg.setText(errMsg);
         }else{
-            if (getIntent().getSerializableExtra("update") == null){
+            if (getIntent().getStringExtra("update").equals("update")){
                 //新規登録
                 Msg.setText(insertMsg);
                 insert();
@@ -189,7 +188,6 @@ public class BookAddCompleteActivity extends ActionBarActivity {
             db.update("book_table", val, "_id=" + book.get_id(), null);
 
             //テキストメッセージを書き換える処理
-
 
 
         }catch (Exception e){

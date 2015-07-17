@@ -16,17 +16,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class BookResultItemActivity extends ActionBarActivity {
 
     Book book;
+    Map<Integer,String> map ;
 
     ImageView image;
     ImageGetTask task;
@@ -46,6 +50,46 @@ public class BookResultItemActivity extends ActionBarActivity {
             task.execute(book.getSmallImageURL());
 
         }
+
+        map = new HashMap<Integer, String>();
+        map.put(0,"なし");
+        map.put(1,"単行本");
+        map.put(2,"文庫");
+        map.put(3,"新書");
+        map.put(4,"全集/双書");
+        map.put(5,"事典/辞典");
+        map.put(6,"図鑑");
+        map.put(7,"絵本");
+        map.put(8,"カセット/CD");
+        map.put(9,"コミック");
+        map.put(10,"その他");
+
+        TextView title      = (TextView)findViewById(R.id.title);
+        TextView titleKana  = (TextView)findViewById(R.id.titleKana);
+        TextView author     = (TextView)findViewById(R.id.author);
+        TextView authorKana = (TextView)findViewById(R.id.authorKana);
+        TextView publisher  = (TextView)findViewById(R.id.publisherName);
+        TextView itemCaption= (TextView)findViewById(R.id.itemCaption);
+        TextView size       = (TextView)findViewById(R.id.size);
+        TextView salesDate  = (TextView)findViewById(R.id.salesDate);
+        TextView itemPrice  = (TextView)findViewById(R.id.itemPrice);
+
+        title.setText(book.getTitle());
+        titleKana.setText(book.getTitleKana());
+        author.setText(book.getAuthor());
+        authorKana.setText(book.getAuthorKana());
+        publisher.setText(book.getPublisherName());
+        itemCaption.setText(book.getItemCaption());
+
+        size.setText(map.get(book.getSize()));
+        salesDate.setText(book.getSalesDate());
+        String price = "";
+        if (book.getItemPrice() >= 1000){
+            price = "¥" + ((int)book.getItemPrice()/1000) + "," + book.getItemPrice() % 1000 ;
+        }else {
+            price = "¥" + book.getItemPrice();
+        }
+        itemPrice.setText(price);
 
         Button AddBtn = (Button)findViewById(R.id.AddItem);
         AddBtn.setOnClickListener(new View.OnClickListener() {
