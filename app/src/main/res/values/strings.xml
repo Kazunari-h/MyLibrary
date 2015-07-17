@@ -38,10 +38,15 @@
     <string name="title_activity_book_add_complete">登録完了</string>
     <string name="title_activity_book_result_list">検索結果</string>
     <string name="title_activity_book_result_item">BookResultItemActivity</string>
+    <string name="size">カテゴリ</string>
     <string name="categorySize">コミック</string>
     <string name="action_search_word">キーワード検索</string>
     <string name="action_search_category">カテゴリ検索</string>
     <string name="action_search_isbn">ISBN検索</string>
     <string name="title_activity_book_delete_list">BookDeleteListActivity</string>
     <string name="completeBtn">リストに戻る</string>
+    <string name="price">価格</string>
+    <string name="webPage">WEBページを見る</string>
+    <string name="salesDate">発売日</string>
+    <string name="itemPrice">価格</string>
 </resources>

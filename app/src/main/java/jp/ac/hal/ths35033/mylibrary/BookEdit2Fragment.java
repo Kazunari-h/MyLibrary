@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 
 /**
@@ -27,7 +29,10 @@ public class BookEdit2Fragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private String keyword;
     private OnFragmentInteractionListener mListener;
+
+    private BookAddActivity bookAddActivity;
 
     /**
      * Use this factory method to create a new instance of
@@ -64,7 +69,15 @@ public class BookEdit2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_book_edit2, container, false);
+        View view = inflater.inflate(R.layout.fragment_book_edit2, container, false);
+        keyword = ((EditText)view.findViewById(R.id.APIeditText)).getText().toString();
+        ((Button)view.findViewById(R.id.APISearchBtn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bookAddActivity.apiAccess(keyword);
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,6 +92,7 @@ public class BookEdit2Fragment extends Fragment {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            bookAddActivity = (BookAddActivity)activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");

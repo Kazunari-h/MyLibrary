@@ -100,7 +100,7 @@ public class BookAddActivity extends ActionBarActivity
         // TabHost に追加
         tabHost.addTab(tabSpec3, BookEdit3Fragment.class, null);
 
-        tabHost.setCurrentTab(0);
+        tabHost.setCurrentTab(1);
         // リスナー登録
         tabHost.setOnTabChangedListener(this);
 
@@ -208,6 +208,12 @@ public class BookAddActivity extends ActionBarActivity
         startActivity(intent);
     }
 
+    public void apiAccess(String keyword){
+        Intent intent = new Intent(this, BookResultListActivity.class);
+        intent.putExtra("keyword",keyword);
+        startActivity(intent);
+    }
+
     public void insertDispTran(Book b){
         Intent intent = new Intent(this,BookAddCompleteActivity.class);
         intent.putExtra("book", b);
@@ -239,6 +245,7 @@ public class BookAddActivity extends ActionBarActivity
                 bos.close();
             } catch (Exception e) {
                 //IOException, NullPointerException
+                e.printStackTrace();
             }
         }
     }

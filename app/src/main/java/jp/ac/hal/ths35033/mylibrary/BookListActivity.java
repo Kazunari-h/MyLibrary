@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -22,6 +23,8 @@ import android.widget.EditText;
 import android.widget.GridView;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -42,7 +45,6 @@ public class BookListActivity extends ActionBarActivity {
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                GridView gv = (GridView) findViewById(R.id.grid01);
                 GridView gridView = (GridView) parent;
                 // クリックされたアイテムを取得します
                 Book item = (Book) gridView.getItemAtPosition(position);
@@ -131,7 +133,7 @@ public class BookListActivity extends ActionBarActivity {
                             else checkedItems.remove((Integer) which);
                         }
                     })
-                    .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("検索", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(BookListActivity.this,BookListActivity.class);
@@ -415,7 +417,9 @@ public class BookListActivity extends ActionBarActivity {
     public static final Bitmap loadBitmapLocalStorage(String fileName, Context context) throws IOException, FileNotFoundException {
         BufferedInputStream bis = null;
         try {
-            bis = new BufferedInputStream(context.openFileInput(fileName));
+
+            bis = (BufferedInputStream) context.getClass().getClassLoader().getResourceAsStream(fileName);
+//            bis = new BufferedInputStream(context.openFileInput(fileName));
             return BitmapFactory.decodeStream(bis);
         } finally {
             try {
@@ -426,5 +430,19 @@ public class BookListActivity extends ActionBarActivity {
         }
     }
 
+    public Bitmap loadBitmap(Book book) throws IOException {
+        final String SAVE_DIR = "/MyPhoto/";
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + SAVE_DIR);
+
+        String AttachName = file.getAbsolutePath() + "/" + book.getSmallImageURL();
+
+        try {
+            FileInputStream in = new FileInputStream(AttachName);
+            return BitmapFactory.decodeStream(in);
+        } catch(IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
 }
 
