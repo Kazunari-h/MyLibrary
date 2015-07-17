@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
+
+import java.io.IOException;
 
 
 /**
@@ -41,7 +44,9 @@ public class BookEdit1Fragment extends Fragment {
     EditText pubEdit ;
     EditText saleEdit ;
     EditText captEdit ;
-
+    Button uploadBtn;
+    RadioGroup radioGroup;
+    boolean upFlg = false;
 
     /**
      * Use this factory method to create a new instance of
@@ -78,13 +83,16 @@ public class BookEdit1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_book_edit1, container, false);
-        button = (Button)view.findViewById(R.id.addButton);
-        titleEdit = (EditText) view.findViewById(R.id.titleEdit);
-        authorEdit = (EditText) view.findViewById(R.id.authorEdit);
-        pubEdit = (EditText) view.findViewById(R.id.publisherNameEdit);
-        saleEdit = (EditText) view.findViewById(R.id.salesDateEdit);
-        captEdit = (EditText) view.findViewById(R.id.itemCaptionEdit);
+        View view   = inflater.inflate(R.layout.fragment_book_edit1, container, false);
+        button      = (Button)view.findViewById(R.id.addButton);
+        titleEdit   = (EditText) view.findViewById(R.id.titleEdit);
+        authorEdit  = (EditText) view.findViewById(R.id.authorEdit);
+        pubEdit     = (EditText) view.findViewById(R.id.publisherNameEdit);
+        saleEdit    = (EditText) view.findViewById(R.id.salesDateEdit);
+        captEdit    = (EditText) view.findViewById(R.id.itemCaptionEdit);
+        uploadBtn   = (Button) view.findViewById(R.id.itemImage);
+        radioGroup  = (RadioGroup) view.findViewById(R.id.groupRadio);
+        radioGroup.check(0);
 
         if (getArguments().getSerializable("book") != null){
             book = (Book)getArguments().getSerializable("book");
@@ -109,6 +117,55 @@ public class BookEdit1Fragment extends Fragment {
                     b.setPublisherName(pubEdit.getText().toString());
                     b.setSalesDate(saleEdit.getText().toString());
                     b.setItemCaption(captEdit.getText().toString());
+
+                    try {
+                        if (upFlg){
+                            b.setSmallImageURL(bookAddActivity.saveBitmap(bookAddActivity.img));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    int checkedId = radioGroup.getCheckedRadioButtonId();
+                    int value = 0;
+                    switch (checkedId) {
+                        case R.id.radioButton0:
+                            value = 0;
+                            break;
+                        case R.id.radioButton1:
+                            value = 1;
+                            break;
+                        case R.id.radioButton2:
+                            value = 2;
+                            break;
+                        case R.id.radioButton3:
+                            value = 3;
+                            break;
+                        case R.id.radioButton4:
+                            value = 4;
+                            break;
+                        case R.id.radioButton5:
+                            value = 5;
+                            break;
+                        case R.id.radioButton6:
+                            value = 6;
+                            break;
+                        case R.id.radioButton7:
+                            value = 7;
+                            break;
+                        case R.id.radioButton8:
+                            value = 8;
+                            break;
+                        case R.id.radioButton9:
+                            value = 9;
+                            break;
+                        case R.id.radioButton10:
+                            value = 10;
+                            break;
+                    }
+
+                    b.setSize(value);
+
                     if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
                         setEditClear();
                         bookAddActivity.updateDispTran(b);
@@ -124,6 +181,55 @@ public class BookEdit1Fragment extends Fragment {
                     b.setPublisherName(pubEdit.getText().toString());
                     b.setSalesDate(saleEdit.getText().toString());
                     b.setItemCaption(captEdit.getText().toString());
+
+                    int checkedId = radioGroup.getCheckedRadioButtonId();
+                    int value = 0;
+                    switch (checkedId) {
+                        case R.id.radioButton0:
+                            value = 0;
+                            break;
+                        case R.id.radioButton1:
+                            value = 1;
+                            break;
+                        case R.id.radioButton2:
+                            value = 2;
+                            break;
+                        case R.id.radioButton3:
+                            value = 3;
+                            break;
+                        case R.id.radioButton4:
+                            value = 4;
+                            break;
+                        case R.id.radioButton5:
+                            value = 5;
+                            break;
+                        case R.id.radioButton6:
+                            value = 6;
+                            break;
+                        case R.id.radioButton7:
+                            value = 7;
+                            break;
+                        case R.id.radioButton8:
+                            value = 8;
+                            break;
+                        case R.id.radioButton9:
+                            value = 9;
+                            break;
+                        case R.id.radioButton10:
+                            value = 10;
+                            break;
+                    }
+
+                    b.setSize(value);
+
+                    try {
+                        if (upFlg){
+                            b.setSmallImageURL(bookAddActivity.saveBitmap(bookAddActivity.img));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     if (!b.getTitle().isEmpty() && !b.getAuthor().isEmpty()){
                         setEditClear();
                         bookAddActivity.insertDispTran(b);
@@ -134,6 +240,15 @@ public class BookEdit1Fragment extends Fragment {
             }
         });
 
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bookAddActivity.uploadImage();
+                upFlg = true;
+                uploadBtn.setBackgroundColor(getResources().getColor(R.color.color2));
+                uploadBtn.setText("アップロード済み");
+            }
+        });
         // Inflate the layout for this fragment
         return view;
     }

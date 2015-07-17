@@ -158,6 +158,9 @@ public class BookDetailActivity extends ActionBarActivity {
         itemPrice.setText(price);
 
         Button jump = (Button)findViewById(R.id.jumppage);
+        if (book.getItemURL().isEmpty()){
+            jump.setVisibility(View.INVISIBLE);
+        }
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

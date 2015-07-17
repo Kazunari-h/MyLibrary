@@ -5,9 +5,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,6 +71,29 @@ public class BookResultItemActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // ActionBarの取得
+        ActionBar actionBar = this.getSupportActionBar();
+        if (book != null) {
+            actionBar.setTitle(book.title);
+            actionBar.setSubtitle(book.author);
+        } else {
+            actionBar.setTitle("新規登録");
+            book = new Book();
+        }
+        // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        // タイトルを表示するか
+        actionBar.setDisplayShowTitleEnabled(true);
+        // iconを表示するか
+        actionBar.setDisplayShowHomeEnabled(true);
+        Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+        actionBar.setBackgroundDrawable(drawable);
+        actionBar.show();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_result_item, menu);
@@ -84,6 +109,9 @@ public class BookResultItemActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if(id==android.R.id.home){
+            finish();
             return true;
         }
 

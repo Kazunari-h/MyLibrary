@@ -1,7 +1,9 @@
 package jp.ac.hal.ths35033.mylibrary;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -144,6 +146,24 @@ public class BookResultListActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // ActionBarの取得
+        ActionBar actionBar = this.getSupportActionBar();
+
+        actionBar.setTitle("インターネット検索結果");
+        // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        // タイトルを表示するか
+        actionBar.setDisplayShowTitleEnabled(true);
+        // iconを表示するか
+        actionBar.setDisplayShowHomeEnabled(true);
+        Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+        actionBar.setBackgroundDrawable(drawable);
+        actionBar.show();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_result_list, menu);
@@ -159,6 +179,9 @@ public class BookResultListActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if(id==android.R.id.home){
+            finish();
             return true;
         }
 

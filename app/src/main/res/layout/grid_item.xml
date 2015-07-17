@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/imageLayout"
-    android:background="@color/colorWhite"
+    android:background="@color/color5"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -12,13 +12,13 @@
         android:layout_marginTop="20dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@color/colorWhite"
         android:layout_height="wrap_content">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:src="@drawable/noimage"
             android:scaleType="centerInside"
+            android:background="@color/color7"
             android:id="@+id/itemImage"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp"
+            android:textSize="12dp"
             android:background="@color/color5"
             android:text="@string/categorySize"
             android:id="@+id/category"/>
@@ -59,8 +60,11 @@
             android:padding="4dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:ellipsize="end"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            android:textSize="12dp"
             android:id="@+id/title"
-            android:background="@color/colorWhite"
             android:layout_weight="1"
             android:text="title"/>
 

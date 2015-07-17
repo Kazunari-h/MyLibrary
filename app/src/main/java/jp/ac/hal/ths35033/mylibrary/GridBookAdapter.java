@@ -72,7 +72,11 @@ public class GridBookAdapter extends BaseAdapter {
         Book book = bookList.get(position);
 
         convertView = layoutInflater.inflate(R.layout.grid_item,parent,false);
-        ((TextView)convertView.findViewById(R.id.category)).setText(map.get(bookList.get(position).getSize()));
+        TextView textView = (TextView)convertView.findViewById(R.id.haveFlgView);
+        if (book.getHaveFlg() == 0){
+            textView.setVisibility(View.GONE);
+        }
+        ((TextView) convertView.findViewById(R.id.category)).setText(map.get(bookList.get(position).getSize()));
         ((TextView)convertView.findViewById(R.id.title)).setText(bookList.get(position).getTitle());
         ((TextView)convertView.findViewById(R.id.lendingText)).setText(bookList.get(position).getRate() + "%");
         if (!book.getSmallImageURL().isEmpty()){

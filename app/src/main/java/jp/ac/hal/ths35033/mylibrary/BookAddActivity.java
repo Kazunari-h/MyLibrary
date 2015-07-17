@@ -2,12 +2,16 @@ package jp.ac.hal.ths35033.mylibrary;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Context;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -19,8 +23,12 @@ import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class BookAddActivity extends ActionBarActivity
@@ -35,6 +43,10 @@ public class BookAddActivity extends ActionBarActivity
     float lastTouchX;
     float currentX;
     int target = 0;
+    public String fileName = "";
+    public Bitmap img;
+
+    private static final int REQUEST_GALLERY = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,29 +54,6 @@ public class BookAddActivity extends ActionBarActivity
         setContentView(R.layout.activity_book_add);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         book = (Book) getIntent().getSerializableExtra("book");
-
-        // ActionBarの設定
-        if (savedInstanceState == null) {
-            // ActionBarの取得
-            ActionBar actionBar = this.getSupportActionBar();
-
-            if (book != null) {
-                actionBar.setTitle(book.title);
-                actionBar.setSubtitle(book.author);
-            } else {
-                actionBar.setTitle("新規登録");
-            }
-            // 戻るボタンを表示するかどうか('<' <- こんなやつ)
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            // タイトルを表示するか
-            actionBar.setDisplayShowTitleEnabled(true);
-            // iconを表示するか
-            actionBar.setDisplayShowHomeEnabled(true);
-            Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
-            actionBar.setBackgroundDrawable(drawable);
-            actionBar.show();
-        }
-
 
         // FragmentTabHost を取得する
         tabHost = (FragmentTabHost)findViewById(android.R.id.tabhost);
@@ -108,6 +97,30 @@ public class BookAddActivity extends ActionBarActivity
             TextView tv = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(getResources().getColor(R.color.colorWhite));
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // ActionBarの取得
+        ActionBar actionBar = this.getSupportActionBar();
+
+        if (book != null) {
+            actionBar.setTitle(book.title);
+            actionBar.setSubtitle(book.author);
+        } else {
+            actionBar.setTitle("新規登録");
+            book = new Book();
+        }
+        // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        // タイトルを表示するか
+        actionBar.setDisplayShowTitleEnabled(true);
+        // iconを表示するか
+        actionBar.setDisplayShowHomeEnabled(true);
+        Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+        actionBar.setBackgroundDrawable(drawable);
+        actionBar.show();
     }
 
     @Override
@@ -215,12 +228,18 @@ public class BookAddActivity extends ActionBarActivity
     }
 
     public void insertDispTran(Book b){
+        if (book.getSmallImageURL() != null){
+            b.setSmallImageURL(book.getSmallImageURL());
+        }
         Intent intent = new Intent(this,BookAddCompleteActivity.class);
         intent.putExtra("book", b);
         startActivity(intent);
     }
 
     public void updateDispTran(Book b){
+        if (book.getSmallImageURL() != null){
+            b.setSmallImageURL(book.getSmallImageURL());
+        }
         Intent intent = new Intent(this,BookAddCompleteActivity.class);
         intent.putExtra("book", b);
         intent.putExtra("update", "update");
@@ -228,26 +247,64 @@ public class BookAddActivity extends ActionBarActivity
         finish();
     }
 
-    //内部ストレージに、画像ファイルを保存する(png) (Android 用)
-    public static final boolean savePngLocalStorage(String fileName, Bitmap bitmap, Context context) throws IOException {
-        BufferedOutputStream bos = null;
-        Bitmap tmp = null;
-        try {
-            bos = new BufferedOutputStream(context.openFileOutput(fileName, Context.MODE_PRIVATE)); //他アプリアクセス不可
-            tmp = bitmap.copy(Bitmap.Config.ARGB_8888, true);
-            return tmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
-        } finally {
-            if (tmp != null) {
-                tmp.recycle();
-                tmp = null;
-            }
+    public void uploadImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, REQUEST_GALLERY);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_GALLERY && resultCode == RESULT_OK) {
             try {
-                bos.close();
-            } catch (Exception e) {
-                //IOException, NullPointerException
-                e.printStackTrace();
+                InputStream in = getContentResolver().openInputStream(data.getData());
+                img = BitmapFactory.decodeStream(in);
+                in.close();
+            }catch (Exception e){
+
             }
         }
+    }
+
+    public String saveBitmap(Bitmap saveImage) throws IOException {
+        final String SAVE_DIR = "/MyPhoto/";
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + SAVE_DIR);
+        try{
+            if(!file.exists()){
+                file.mkdir();
+            }
+        }catch(SecurityException e){
+            e.printStackTrace();
+            throw e;
+        }
+
+        Date mDate = new Date();
+        SimpleDateFormat fileNameDate = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        fileName = fileNameDate.format(mDate) + ".jpg";
+        String AttachName = file.getAbsolutePath() + "/" + fileName;
+
+        try {
+            FileOutputStream out = new FileOutputStream(AttachName);
+            saveImage.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+            out.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        // save index
+        ContentValues values = new ContentValues();
+        ContentResolver contentResolver = getContentResolver();
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.TITLE, fileName);
+        values.put("_data", AttachName);
+        contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        return fileName;
     }
 }
 
