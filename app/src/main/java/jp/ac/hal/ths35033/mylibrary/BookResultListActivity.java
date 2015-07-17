@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,11 +57,15 @@ public class BookResultListActivity extends ActionBarActivity {
                 "?";
 
 
-//        if (getIntent().getStringExtra("keyword") != null){
-//            rakutenApiUri = rakutenApiUri + "&title="+getIntent().getStringExtra("keyword");
-//        }
+        if (!getIntent().getStringExtra("keyword").isEmpty()){
+            try {
+                rakutenApiUri = rakutenApiUri + "&title="+ URLEncoder.encode(getIntent().getStringExtra("keyword").toString(),"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
 
-        if (getIntent().getStringExtra("ISBN") != null){
+        if (!getIntent().getStringExtra("ISBN").isEmpty()){
             rakutenApiUri = rakutenApiUri + "&isbn="+getIntent().getStringExtra("ISBN");
         }
 
@@ -76,7 +82,6 @@ public class BookResultListActivity extends ActionBarActivity {
                     return;
                 }
                 try {
-                    // 各 ATND イベントのタイトルを配列へ格納
                     ArrayList<Book> bookList = new ArrayList<>();
                     JSONArray eventArray = result.getJSONArray("Items");
                     for (int i = 0; i < eventArray.length(); i++) {
