@@ -50,7 +50,7 @@
     <string name="salesDate">発売日</string>
     <string name="itemPrice">価格</string>
     <string name="imageUpload">画像をアップロード</string>
-    <string name="title_activity_info">InfoActivity</string>
+    <string name="title_activity_info">インフォメーション</string>
     <string name="info_title">このアプリのポイント</string>
     <string name="info_subtitle1">アニメーション</string>
     <string name="info_text1">このアプリではファースト画面であるメニューにアニメーションを使っています。ヌルヌル感を楽しんでください。</string>
@@ -62,4 +62,6 @@
     <string name="info_text4">楽天APIを使い、本の情報を持ってきて入力にかかる手間を少なくしました。前述のバーコード検索と相まって検索の手間が省けたと思います。</string>
     <string name="info_title2">反省点</string>
     <string name="info_subtitle5">時間が足りなかった。細部まで行き渡ってない。規模でかすぎ。これ作ってる間にアプリ直せって感じですよね・・・。</string>
+
+
 </resources>

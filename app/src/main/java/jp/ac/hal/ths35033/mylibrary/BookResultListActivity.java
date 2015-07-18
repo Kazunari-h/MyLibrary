@@ -54,10 +54,11 @@ public class BookResultListActivity extends ActionBarActivity {
                 "sort=sales&" +
                 "hits=30&" +
                 "applicationId=" +
-                "1068070870366265356";
+                "";
 
 
         if ( getIntent().getStringExtra("keyword") != null && !getIntent().getStringExtra("keyword").isEmpty()){
+            Toast.makeText(this,getIntent().getStringExtra("keyword").toString(),Toast.LENGTH_SHORT).show();
             try {
                 rakutenApiUri = rakutenApiUri + "&title="+ URLEncoder.encode(getIntent().getStringExtra("keyword").toString(),"UTF-8");
             } catch (UnsupportedEncodingException e) {

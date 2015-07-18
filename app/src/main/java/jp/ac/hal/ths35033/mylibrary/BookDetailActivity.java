@@ -329,14 +329,16 @@ public class BookDetailActivity extends ActionBarActivity {
                     .setNegativeButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(BookDetailActivity.this, "OK", Toast.LENGTH_SHORT).show();
                             MySQLiteOpenHelper dbh = null;
                             SQLiteDatabase db = null;
                             try {
                                 dbh = new MySQLiteOpenHelper(BookDetailActivity.this);
                                 db = dbh.getWritableDatabase();
                                 //delete
-                                db.delete("book_table", "_id=?", new String[]{String.valueOf(book.get_id())});
+                                int i = db.delete("book_table", "_id=?", new String[]{String.valueOf(book.get_id())});
+                                if (i != 0) {
+                                    Toast.makeText(BookDetailActivity.this, "削除しました。", Toast.LENGTH_SHORT).show();
+                                }
                             } finally {
                                 //終了
                                 if (db != null) {
@@ -354,7 +356,7 @@ public class BookDetailActivity extends ActionBarActivity {
             return true;
         }else if (id == R.id.action_tweet){
             try {
-                String url = "http://twitter.com/share?text=" + URLEncoder.encode(book.getTitle()+"って本がいいよ！", "UTF-8");
+                String url = "http://twitter.com/share?text=" + URLEncoder.encode("『"+book.getTitle()+"』って本がいいよ！", "UTF-8");
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                 startActivity(intent);
             }catch (Exception e){

@@ -211,6 +211,10 @@
             android:layout_margin="20dp"
             android:padding="20dp"
             android:text="登録"
+            android:background="@drawable/frame"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:typeface="sans"
             android:id="@+id/addButton"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>

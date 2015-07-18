@@ -74,7 +74,11 @@ public class BookAddActivity extends ActionBarActivity
         Bundle bundle = new Bundle();
         bundle.putSerializable("book", book);
         // TabHost に追加
-        tabHost.addTab(tabSpec1, bookEdit1Fragment.getClass(), bundle);
+        if (book != null && book.title != null ){
+            tabHost.addTab(tabSpec1, bookEdit1Fragment.getClass(), bundle);
+        }else {
+            tabHost.addTab(tabSpec1, bookEdit1Fragment.getClass(), null);
+        }
 
         // TabSpec を生成する
         tabSpec2 = tabHost.newTabSpec("検索");
@@ -113,7 +117,7 @@ public class BookAddActivity extends ActionBarActivity
     public void getAction(){
         ActionBar actionBar = this.getSupportActionBar();
 
-        if (book != null) {
+        if (book != null && book.title != null) {
             actionBar.setTitle(book.title);
             actionBar.setSubtitle(book.author);
         } else {
@@ -187,7 +191,7 @@ public class BookAddActivity extends ActionBarActivity
 
             case MotionEvent.ACTION_UP:
                 currentX = event.getX();
-                if (lastTouchX < currentX) {
+                if (lastTouchX < currentX - 100) {
                     //前に戻る動作
                     target--;
                     if (target < 0){
@@ -196,7 +200,7 @@ public class BookAddActivity extends ActionBarActivity
                     System.out.println(target);
                     tabHost.setCurrentTab(target);
                 }
-                if (lastTouchX > currentX) {
+                if (lastTouchX > currentX + 100) {
                     //次に移動する動作
                     target = ++target % 3;
                     System.out.println(target);
@@ -206,7 +210,7 @@ public class BookAddActivity extends ActionBarActivity
 
             case MotionEvent.ACTION_CANCEL:
                 currentX = event.getX();
-                if (lastTouchX < currentX) {
+                if (lastTouchX < currentX - 100) {
                     //前に戻る動作
                     target--;
                     if (target < 0){
@@ -214,7 +218,7 @@ public class BookAddActivity extends ActionBarActivity
                     }
                     tabHost.setCurrentTab(target);
                 }
-                if (lastTouchX > currentX) {
+                if (lastTouchX > currentX + 100) {
                     //次に移動する動作
                     target = ++target % 3;
                     tabHost.setCurrentTab(target);

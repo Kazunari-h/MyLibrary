@@ -67,6 +67,7 @@ class AsyncJsonLoader extends AsyncTask<String, Integer, JSONObject> {
                 return new JSONObject(outputStream.toString());
             } else {
                 httpResponse.getEntity().getContent().close();
+                System.out.println(_uri[0]+"****"+httpResponse.getStatusLine().getStatusCode());
                 throw new IOException();
             }
         } catch (IOException e) {

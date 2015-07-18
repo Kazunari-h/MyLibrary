@@ -47,6 +47,7 @@ public class BookEdit1Fragment extends Fragment {
     Button uploadBtn;
     RadioGroup radioGroup;
     boolean upFlg = false;
+    boolean newFlg = false;
 
     /**
      * Use this factory method to create a new instance of
@@ -94,30 +95,37 @@ public class BookEdit1Fragment extends Fragment {
         radioGroup  = (RadioGroup) view.findViewById(R.id.groupRadio);
         radioGroup.check(0);
 
-        if (getArguments().getSerializable("book") != null){
-            book = (Book)getArguments().getSerializable("book");
-            titleEdit.setText(book.getTitle());
-            authorEdit.setText(book.getAuthor());
-            pubEdit.setText(book.getPublisherName());
-            saleEdit.setText(book.getSalesDate());
-            captEdit.setText(book.getItemCaption());
-            button.setText("更新");
+        if (getArguments() != null){
+            if (getArguments().getSerializable("book") != null){
+                book = (Book)getArguments().getSerializable("book");
+                titleEdit.setText(book.getTitle());
+                authorEdit.setText(book.getAuthor());
+                pubEdit.setText(book.getPublisherName());
+                saleEdit.setText(book.getSalesDate());
+                captEdit.setText(book.getItemCaption());
+                button.setText("更新");
+                newFlg = false;
+            }else {
+                book = new Book();
+                newFlg = true;
+            }
+        }else {
+            book = new Book();
+            newFlg = true;
         }
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Book b = book;
                 //登録ボタン押したら
-                if (b != null) {
+                if (!newFlg) {
                     //データベース更新
                     b.setTitle(titleEdit.getText().toString());
                     b.setAuthor(authorEdit.getText().toString());
                     b.setPublisherName(pubEdit.getText().toString());
                     b.setSalesDate(saleEdit.getText().toString());
                     b.setItemCaption(captEdit.getText().toString());
-
                     try {
                         if (upFlg){
                             b.setSmallImageURL(bookAddActivity.saveBitmap(bookAddActivity.img));
@@ -125,7 +133,6 @@ public class BookEdit1Fragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
                     int checkedId = radioGroup.getCheckedRadioButtonId();
                     int value = 0;
                     switch (checkedId) {

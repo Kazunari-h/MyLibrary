@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,14 +51,15 @@ public class BookAddCompleteActivity extends ActionBarActivity {
             //結果が受け取れなかった。
             Msg.setText(errMsg);
         }else{
-            if (getIntent().getStringExtra("update").equals("update")){
+            if (getIntent().getStringExtra("update") != null && !getIntent().getStringExtra("update").isEmpty()){
+                //更新
+                Toast.makeText(this,getIntent().getStringExtra("update"),Toast.LENGTH_SHORT).show();
+                Msg.setText(updateMsg);
+                update();
+            }else{
                 //新規登録
                 Msg.setText(insertMsg);
                 insert();
-            }else{
-                //更新
-                Msg.setText(updateMsg);
-                update();
             }
         }
 

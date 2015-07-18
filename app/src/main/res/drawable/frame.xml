@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <solid android:color="#00000000" />
-    <stroke android:width="5dp" android:color="#77dcdcdc" />
-    <corners android:radius="2dp" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- ボタンタップ時 定義 -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle" android:useLevel="false">
+            <solid android:color="@android:color/darker_gray" />
+        </shape>
+    </item>
+
+    <!-- ボタン通常表示時 定義 -->
+    <item android:state_pressed="false">
+        <shape android:shape="rectangle" android:useLevel="false">
+            <solid android:color="@color/accentsub" />
+        </shape>
+    </item>
+</selector>

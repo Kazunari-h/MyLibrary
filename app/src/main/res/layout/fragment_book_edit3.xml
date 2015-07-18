@@ -33,6 +33,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="バーコードで検索する"
+            android:background="@drawable/frame"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:typeface="sans"
             android:id="@+id/cameraOn"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp" />
