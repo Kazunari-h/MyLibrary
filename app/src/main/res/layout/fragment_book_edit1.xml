@@ -132,7 +132,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="単行本"
-                    android:id="@+id/radioButton1" />
+                    android:id="@+id/radioButton1"
+                    android:singleLine="false" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

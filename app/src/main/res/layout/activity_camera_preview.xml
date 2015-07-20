@@ -19,7 +19,7 @@
             android:layout_height="240dp"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/frame" />
+            android:background="@drawable/camera_frame" />
 
     </RelativeLayout>
 

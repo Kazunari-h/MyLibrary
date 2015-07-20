@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by hirosawak on 2015/07/12.
  */
-public class Book implements Serializable {
+public class Book extends Object implements Serializable {
 
     int _id;
     //種別
@@ -16,6 +16,8 @@ public class Book implements Serializable {
     int haveFlg;
     // 価格
     int itemPrice;
+
+    private boolean isSelected;
     // タイトル
     String title;
     // タイトルカナ
@@ -225,4 +227,19 @@ public class Book implements Serializable {
         this.isbn = isbn;
     }
 
+
+    @Override
+    public String toString() {
+        return this.title;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
 }
+

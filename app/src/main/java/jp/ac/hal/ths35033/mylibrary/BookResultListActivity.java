@@ -54,7 +54,7 @@ public class BookResultListActivity extends ActionBarActivity {
                 "sort=sales&" +
                 "hits=30&" +
                 "applicationId=" +
-                "";
+                "1068070870366265356";
 
 
         if ( getIntent().getStringExtra("keyword") != null && !getIntent().getStringExtra("keyword").isEmpty()){

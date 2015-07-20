@@ -2,6 +2,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="jp.ac.hal.ths35033.mylibrary.BookResultItemActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+    <item
+        android:id="@+id/action_group"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        android:icon="@drawable/menudd"
+        app:showAsAction="ifRoom" >
+        <menu>
+            <item android:title="@string/action_settings"
+                android:id="@+id/action_settings"
+                android:orderInCategory="100"
+                android:icon="@drawable/gear"
+                app:showAsAction="ifRoom" />
+            <item android:id="@+id/action_line" android:title="@string/book_line"
+                android:icon="@drawable/line"
+                android:orderInCategory="100" app:showAsAction="never" />
+
+            <item android:id="@+id/action_tweet" android:title="@string/book_tweet"
+                android:icon="@drawable/tweet"
+                android:orderInCategory="100" app:showAsAction="never" />
+        </menu>
+    </item>
 </menu>

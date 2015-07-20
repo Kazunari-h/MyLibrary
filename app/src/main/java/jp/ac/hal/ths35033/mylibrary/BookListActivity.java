@@ -142,7 +142,6 @@ public class BookListActivity extends ActionBarActivity {
         }else {
             AccessDatabase();
         }
-
     }
 
     @Override

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -93,6 +94,12 @@ public class GridBookAdapter extends BaseAdapter {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        RelativeLayout relativeLayout = ((RelativeLayout)convertView.findViewById(R.id.selectLayout));
+        if (book.isSelected()){
+            relativeLayout.setVisibility(View.VISIBLE);
+        }else {
+            relativeLayout.setVisibility(View.INVISIBLE);
         }
         return convertView;
     }
