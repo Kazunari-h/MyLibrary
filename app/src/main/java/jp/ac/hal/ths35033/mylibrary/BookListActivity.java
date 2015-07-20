@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -52,6 +53,53 @@ public class BookListActivity extends ActionBarActivity {
             }
         });
 
+        gv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                GridView gridView = (GridView) parent;
+                // クリックされたアイテムを取得します
+                Book item = (Book) gridView.getItemAtPosition(position);
+                longMess(item);
+                return true;
+            }
+        });
+
+    }
+
+    public void longMess(Book book){
+        final Book item = book;
+        new AlertDialog.Builder(this)
+                .setTitle(getText(R.string.action_del))
+                .setMessage(item.getTitle() + "を削除します。")
+                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MySQLiteOpenHelper dbh = null;
+                        SQLiteDatabase db = null;
+                        try {
+                            dbh = new MySQLiteOpenHelper(BookListActivity.this);
+                            db = dbh.getWritableDatabase();
+                            //delete
+                            int i = db.delete("book_table", "_id=?", new String[]{String.valueOf(item.get_id())});
+                            if (i != 0) {
+                                Toast.makeText(BookListActivity.this, "削除しました。", Toast.LENGTH_SHORT).show();
+                            }
+                        } finally {
+                            //終了
+                            if (db != null) {
+                                db.close();
+                            }
+                            if (dbh != null) {
+                                dbh.close();
+                            }
+                        }
+                        Intent intent = new Intent(BookListActivity.this,BookListActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setPositiveButton("Cancel", null)
+                .show();
     }
 
     @Override
@@ -94,7 +142,6 @@ public class BookListActivity extends ActionBarActivity {
         }else {
             AccessDatabase();
         }
-
     }
 
     @Override
@@ -352,6 +399,8 @@ public class BookListActivity extends ActionBarActivity {
             Log.d("err", "データが入っていません。");
         }
     }
+
+
 
     public Book setBook(Cursor csr ,String[] strs) throws SQLException,Exception {
         Book b = new Book();

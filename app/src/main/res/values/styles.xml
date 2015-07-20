@@ -4,13 +4,8 @@
     <style name="MyTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <!-- タイトルバーの背景色 -->
-        <item name="android:actionBarStyle">@style/ActionBarStyle</item>
-        <item name="android:actionBarItemBackground">@color/color1</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="ActionBarStyle" parent="MyTheme">
-        <item name="android:background">@color/color4</item>
-    </style>
 
 </resources>

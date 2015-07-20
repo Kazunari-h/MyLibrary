@@ -49,4 +49,23 @@
     <string name="webPage">WEBページを見る</string>
     <string name="salesDate">発売日</string>
     <string name="itemPrice">価格</string>
+    <string name="imageUpload">画像をアップロード</string>
+    <string name="title_activity_info">インフォメーション</string>
+    <string name="info_title">このアプリのポイント</string>
+    <string name="info_subtitle1">アニメーション</string>
+    <string name="info_text1">このアプリではファースト画面であるメニューにアニメーションを使っています。ヌルヌル感を楽しんでください。</string>
+    <string name="info_subtitle2">グリッドビュー</string>
+    <string name="info_text2">リストビューではなく、グリッドビューの理由はスマホの画面ではグリッドビューの方が押しやすいからです。それ以外にも写真も使いたかったのでグリッドビューを採用しました。</string>
+    <string name="info_subtitle3">バーコード検索</string>
+    <string name="info_text3">バーコードを読み込む際にオートフォーカス機能が重複し、頻繁に落ちてしまっていたので工夫し、なるべく負荷がかからないように作りました。</string>
+    <string name="info_subtitle4">楽天APIによる検索</string>
+    <string name="info_text4">楽天APIを使い、本の情報を持ってきて入力にかかる手間を少なくしました。前述のバーコード検索と相まって検索の手間が省けたと思います。</string>
+    <string name="info_title2">反省点</string>
+    <string name="info_subtitle5">時間不足</string>
+    <string name="select_text">選択</string>
+    <string name="info_text5">時間が足りなかった。規模の大きさと他の課題との両立が難しかったです。</string>
+    <string name="info_subtitle6">アニメーション</string>
+    <string name="info_text6">時間が掛かった割にアニメーションが思ったよりインパクト不足。企画の段階からのもう少しプラスアルファの機能について考えるべきだった。</string>
+
+
 </resources>

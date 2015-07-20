@@ -121,59 +121,88 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/groupRadio"
                 android:layout_weight="1">
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
-                    android:id="@+id/radioButton1" />
+                    android:text="なし"
+                    android:id="@+id/radioButton0" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="単行本"
+                    android:id="@+id/radioButton1"
+                    android:singleLine="false" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="文庫"
                     android:id="@+id/radioButton2" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="新書"
                     android:id="@+id/radioButton3" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="全集/双書"
                     android:id="@+id/radioButton4" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="事典/辞典"
                     android:id="@+id/radioButton5" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="図鑑"
                     android:id="@+id/radioButton6" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="絵本"
                     android:id="@+id/radioButton7" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="カセット/CD"
                     android:id="@+id/radioButton8" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="コミック"
                     android:id="@+id/radioButton9" />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New RadioButton"
+                    android:text="その他"
                     android:id="@+id/radioButton10" />
 
             </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textSize="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="画像"
+                android:id="@+id/textView8" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/imageUpload"
+                android:layout_weight="1"
+                android:id="@+id/itemImage"/>
 
         </LinearLayout>
 
@@ -183,6 +212,10 @@
             android:layout_margin="20dp"
             android:padding="20dp"
             android:text="登録"
+            android:background="@drawable/frame"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:typeface="sans"
             android:id="@+id/addButton"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>

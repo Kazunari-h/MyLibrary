@@ -1,7 +1,9 @@
 package jp.ac.hal.ths35033.mylibrary;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,14 +54,19 @@ public class BookResultListActivity extends ActionBarActivity {
                 "sort=sales&" +
                 "hits=30&" +
                 "applicationId=" +
-                "?";
+                "1068070870366265356";
 
 
-//        if (getIntent().getStringExtra("keyword") != null){
-//            rakutenApiUri = rakutenApiUri + "&title="+getIntent().getStringExtra("keyword");
-//        }
+        if ( getIntent().getStringExtra("keyword") != null && !getIntent().getStringExtra("keyword").isEmpty()){
+            Toast.makeText(this,getIntent().getStringExtra("keyword").toString(),Toast.LENGTH_SHORT).show();
+            try {
+                rakutenApiUri = rakutenApiUri + "&title="+ URLEncoder.encode(getIntent().getStringExtra("keyword").toString(),"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
 
-        if (getIntent().getStringExtra("ISBN") != null){
+        if (getIntent().getStringExtra("ISBN") != null && !getIntent().getStringExtra("ISBN").isEmpty()){
             rakutenApiUri = rakutenApiUri + "&isbn="+getIntent().getStringExtra("ISBN");
         }
 
@@ -74,7 +83,6 @@ public class BookResultListActivity extends ActionBarActivity {
                     return;
                 }
                 try {
-                    // 各 ATND イベントのタイトルを配列へ格納
                     ArrayList<Book> bookList = new ArrayList<>();
                     JSONArray eventArray = result.getJSONArray("Items");
                     for (int i = 0; i < eventArray.length(); i++) {
@@ -144,6 +152,24 @@ public class BookResultListActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // ActionBarの取得
+        ActionBar actionBar = this.getSupportActionBar();
+
+        actionBar.setTitle("インターネット検索結果");
+        // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        // タイトルを表示するか
+        actionBar.setDisplayShowTitleEnabled(true);
+        // iconを表示するか
+        actionBar.setDisplayShowHomeEnabled(true);
+        Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+        actionBar.setBackgroundDrawable(drawable);
+        actionBar.show();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_book_result_list, menu);
@@ -159,6 +185,9 @@ public class BookResultListActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if(id==android.R.id.home){
+            finish();
             return true;
         }
 

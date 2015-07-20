@@ -46,6 +46,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/searchBtnText"
+            android:background="@drawable/frame"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:typeface="sans"
             android:id="@+id/APISearchBtn"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp" />

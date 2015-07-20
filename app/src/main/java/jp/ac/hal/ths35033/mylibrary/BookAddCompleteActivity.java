@@ -6,15 +6,18 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -42,21 +45,21 @@ public class BookAddCompleteActivity extends ActionBarActivity {
 
         exit = (Button)findViewById(R.id.completeBtn);
         Msg = (TextView)findViewById(R.id.completeMsg);
-
         book = (Book) getIntent().getSerializableExtra("book");
 
         if (book == null){
             //結果が受け取れなかった。
             Msg.setText(errMsg);
         }else{
-            if (getIntent().getSerializableExtra("update") == null){
+            if (getIntent().getStringExtra("update") != null && !getIntent().getStringExtra("update").isEmpty()){
+                //更新
+                Toast.makeText(this,getIntent().getStringExtra("update"),Toast.LENGTH_SHORT).show();
+                Msg.setText(updateMsg);
+                update();
+            }else{
                 //新規登録
                 Msg.setText(insertMsg);
                 insert();
-            }else{
-                //更新
-                Msg.setText(updateMsg);
-                update();
             }
         }
 
@@ -189,7 +192,6 @@ public class BookAddCompleteActivity extends ActionBarActivity {
             //テキストメッセージを書き換える処理
 
 
-
         }catch (Exception e){
             //テキストメッセージを書き換える処理
             Msg.setText(errMsg);
@@ -201,6 +203,22 @@ public class BookAddCompleteActivity extends ActionBarActivity {
                 helper.close();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // ActionBarの取得
+        ActionBar actionBar = this.getSupportActionBar();
+        // 戻るボタンを表示するかどうか('<' <- こんなやつ)
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        // タイトルを表示するか
+        actionBar.setDisplayShowTitleEnabled(true);
+        // iconを表示するか
+        actionBar.setDisplayShowHomeEnabled(true);
+        Drawable drawable = getApplicationContext().getResources().getDrawable(R.color.color1);
+        actionBar.setBackgroundDrawable(drawable);
+        actionBar.show();
     }
 
     @Override
@@ -219,6 +237,9 @@ public class BookAddCompleteActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if(id==android.R.id.home){
+            finish();
             return true;
         }
 

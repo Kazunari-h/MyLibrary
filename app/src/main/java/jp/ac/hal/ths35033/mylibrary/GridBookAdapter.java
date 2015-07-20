@@ -3,12 +3,15 @@ package jp.ac.hal.ths35033.mylibrary;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.File;
@@ -72,16 +75,31 @@ public class GridBookAdapter extends BaseAdapter {
         Book book = bookList.get(position);
 
         convertView = layoutInflater.inflate(R.layout.grid_item,parent,false);
+        TextView textView = (TextView)convertView.findViewById(R.id.haveFlgView);
+        if (book.getHaveFlg() == 0){
+            textView.setVisibility(View.GONE);
+        }
         ((TextView)convertView.findViewById(R.id.category)).setText(map.get(bookList.get(position).getSize()));
-        ((TextView)convertView.findViewById(R.id.title)).setText(bookList.get(position).getTitle());
+        TextView title = (TextView) convertView.findViewById(R.id.title);
+        title.setText(bookList.get(position).getTitle());
         ((TextView)convertView.findViewById(R.id.lendingText)).setText(bookList.get(position).getRate() + "%");
         if (!book.getSmallImageURL().isEmpty()){
             try {
-                ((ImageView)convertView.findViewById(R.id.itemImage)).setImageBitmap(loadBitmap(book));
+                ImageView imageView = (ImageView)convertView.findViewById(R.id.itemImage);
+                imageView.setImageBitmap(loadBitmap(book));
+
+                title.setVisibility(View.GONE);
+                imageView.setBackgroundColor(Color.parseColor("#E1BEE7"));
                 System.out.println(book.getSmallImageURL());
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        RelativeLayout relativeLayout = ((RelativeLayout)convertView.findViewById(R.id.selectLayout));
+        if (book.isSelected()){
+            relativeLayout.setVisibility(View.VISIBLE);
+        }else {
+            relativeLayout.setVisibility(View.INVISIBLE);
         }
         return convertView;
     }
@@ -89,12 +107,25 @@ public class GridBookAdapter extends BaseAdapter {
     public Bitmap loadBitmap(Book book) throws IOException {
         final String SAVE_DIR = "/MyPhoto/";
         File file = new File(Environment.getExternalStorageDirectory().getPath() + SAVE_DIR);
-
         String AttachName = file.getAbsolutePath() + "/" + book.getSmallImageURL();
-
         try {
             FileInputStream in = new FileInputStream(AttachName);
-            return BitmapFactory.decodeStream(in);
+            // ビットマップ作成オブジェクトの設定
+            BitmapFactory.Options bmfOptions = new BitmapFactory.Options();
+            // ARGBでそれぞれ0～127段階の色を使用（メモリ対策）
+            bmfOptions.inPreferredConfig = Bitmap.Config.ARGB_4444;
+            // 画像を1/20サイズに縮小（メモリ対策）
+
+            // システムメモリ上に再利用性の無いオブジェクトがある場合に勝手に解放（メモリ対策）
+            bmfOptions.inPurgeable = true;
+            // 現在の表示メトリクスの取得
+            DisplayMetrics dm = new DisplayMetrics();
+            // ビットマップのサイズを現在の表示メトリクスに合わせる（メモリ対策）
+            bmfOptions.inDensity = dm.densityDpi;
+            // 画像ファイルオブジェクトとビットマップ作成オブジェクトから、ビットマップオブジェクト作成
+            Bitmap bmImage = BitmapFactory.decodeStream(in,null,bmfOptions);
+
+            return bmImage;
         } catch(IOException e) {
             e.printStackTrace();
             throw e;

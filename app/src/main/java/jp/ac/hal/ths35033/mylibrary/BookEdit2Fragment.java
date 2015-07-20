@@ -70,10 +70,12 @@ public class BookEdit2Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_book_edit2, container, false);
-        keyword = ((EditText)view.findViewById(R.id.APIeditText)).getText().toString();
+
+        final EditText editText = (EditText)view.findViewById(R.id.APIeditText);
         ((Button)view.findViewById(R.id.APISearchBtn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                keyword = editText.getText().toString();
                 bookAddActivity.apiAccess(keyword);
             }
         });

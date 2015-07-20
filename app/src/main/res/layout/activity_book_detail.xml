@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context="jp.ac.hal.ths35033.mylibrary.BookDetailActivity">
 
     <LinearLayout
@@ -18,7 +19,6 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:layout_marginBottom="4dp"
-            android:background="@color/color1"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -27,17 +27,21 @@
                 android:orientation="vertical"
                 android:background="@drawable/button_corners_4"
                 android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:id="@+id/FlgHaveFlg"
                 android:layout_weight="1" >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="10dp"
                     android:text="@string/jgTitle1"
                     android:gravity="center"
                     />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="10dp"
                     android:text="貸出中"
                     android:id="@+id/haveFlg"
                     android:gravity="center"
@@ -50,10 +54,13 @@
                 android:id="@+id/Flglending"
                 android:background="@drawable/button_corners_3"
                 android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical"
                 android:layout_weight="1" >
                 <TextView
                     android:layout_width="match_parent"
+                    android:textSize="10dp"
                     android:layout_height="wrap_content"
                     android:text="@string/jgTitle2"
                     android:gravity="center"
@@ -63,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:textSize="10dp"
                     android:text="河西"
                     android:id="@+id/lending"
                     />
@@ -74,10 +82,13 @@
                 android:orientation="vertical"
                 android:background="@drawable/button_corners_6"
                 android:padding="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:id="@+id/Flgrate"
                 android:layout_weight="1" >
                 <TextView
                     android:layout_width="match_parent"
+                    android:textSize="10dp"
                     android:layout_height="wrap_content"
                     android:text="@string/jgTitle3"
                     android:gravity="center"
@@ -86,6 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:textSize="10dp"
                     android:gravity="center"
                     android:id="@+id/rate"
                     android:text="92%"/>
@@ -98,11 +110,14 @@
                 android:background="@drawable/button_corners_1"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1" >
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/jgTitle4"
+                    android:textSize="10dp"
                     android:gravity="center" />
 
                 <TextView
@@ -110,6 +125,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textSize="10dp"
                     android:text="2015/6/27"
                     android:id="@+id/updateddate"/>
 
@@ -306,7 +322,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/color5"
+                    android:background="@color/accent"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:typeface="sans"
                     android:padding="4dp"
                     android:layout_margin="15dp"
                     android:gravity="center"
@@ -327,7 +346,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/jumppage"
-            android:drawableLeft="@drawable/internet"
+            android:background="@drawable/frame"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:typeface="sans"
             android:text="@string/webPage"
             android:gravity="center"
             android:layout_gravity="center"

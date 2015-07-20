@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                Intent intent = new Intent(MainActivity.this, InfoActivity.class);
                 startActivity(intent);
             }
         });
@@ -93,7 +93,7 @@ public class MainActivity extends ActionBarActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
             }
         });
@@ -101,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CookAddActivity.class);
+                Intent intent = new Intent(MainActivity.this, BookDeleteListActivity.class);
                 startActivity(intent);
             }
         });
@@ -117,7 +117,8 @@ public class MainActivity extends ActionBarActivity {
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, BookListActivity.class);
+                Intent intent = new Intent(MainActivity.this, BookAddActivity.class);
+                intent.putExtra("key",1);
                 startActivity(intent);
             }
         });
@@ -126,6 +127,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, BookAddActivity.class);
+                intent.putExtra("key",0);
                 startActivity(intent);
             }
         });
