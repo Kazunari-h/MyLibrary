@@ -57,24 +57,30 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
          */
 
         db.execSQL("create table book_table ("
-                        + " _id integer primary key autoincrement not null, "
-                        + "title text not null, "
-                        + "titleKana text, "
-                        + "author text, "
-                        + "authorKana text, "
-                        + "publisherName text, "
-                        + "size integer DEFAULT 0, "
-                        + "isbn text, "
-                        + "itemCaption text, "
-                        + "salesDate text, "
-                        + "itemPrice integer DEFAULT 0, "
-                        + "itemURL text, "
-                        + "smallImageURL text, "
-                        + "haveFlg integer DEFAULT 0, "
-                        + "lending text, "
-                        + "rate integer DEFAULT 0, "
-                        + "updateddate text "
-                        + " );" );
+                + " _id integer primary key autoincrement not null, "
+                + "title text not null, "
+                + "titleKana text, "
+                + "author text, "
+                + "authorKana text, "
+                + "publisherName text, "
+                + "size integer DEFAULT 0, "
+                + "isbn text, "
+                + "itemCaption text, "
+                + "salesDate text, "
+                + "itemPrice integer DEFAULT 0, "
+                + "itemURL text, "
+                + "smallImageURL text, "
+                + "haveFlg integer DEFAULT 0, "
+                + "lending text, "
+                + "rate integer DEFAULT 0, "
+                + "updateddate text "
+                + " );" );
+
+        db.execSQL("create table shop_table ("
+                + " _id integer primary key autoincrement not null, "
+                + "title text not null, "
+                + "shop text "
+                + " );" );
 
         SQLiteStatement stmt = db.compileStatement("insert into book_table(title,titleKana,author,authorKana,publisherName,size,isbn,itemCaption,salesDate,itemPrice,itemURL,smallImageURL,haveFlg,lending,rate,updateddate) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 

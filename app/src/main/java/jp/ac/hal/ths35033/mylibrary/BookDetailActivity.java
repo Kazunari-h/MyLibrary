@@ -168,6 +168,14 @@ public class BookDetailActivity extends ActionBarActivity {
                 jumpWeb(book.getItemURL());
             }
         });
+
+        Button shopping = (Button)findViewById(R.id.ShoppingList);
+        shopping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpWeb(book.getItemURL());
+            }
+        });
     }
 
     @Override

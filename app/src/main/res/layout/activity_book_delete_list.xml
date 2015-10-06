@@ -17,12 +17,13 @@
         android:textStyle="bold"
         android:typeface="sans"
         android:background="@drawable/frame"
-        android:text="削除する"/>
+        android:text="削除する"
+        android:id="@+id/btnDelList"/>
 
     <GridView
         android:id="@+id/grid01"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2" /> <!-- GridViewの列数を指定 -->
+        android:numColumns="3" /> <!-- GridViewの列数を指定 -->
 
 </LinearLayout>

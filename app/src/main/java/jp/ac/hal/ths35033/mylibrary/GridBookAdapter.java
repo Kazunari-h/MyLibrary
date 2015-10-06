@@ -3,7 +3,6 @@ package jp.ac.hal.ths35033.mylibrary;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -89,7 +88,6 @@ public class GridBookAdapter extends BaseAdapter {
                 imageView.setImageBitmap(loadBitmap(book));
 
                 title.setVisibility(View.GONE);
-                imageView.setBackgroundColor(Color.parseColor("#E1BEE7"));
                 System.out.println(book.getSmallImageURL());
             } catch (Exception e) {
                 e.printStackTrace();

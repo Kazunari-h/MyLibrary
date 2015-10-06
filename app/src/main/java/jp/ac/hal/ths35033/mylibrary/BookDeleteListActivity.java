@@ -1,5 +1,8 @@
 package jp.ac.hal.ths35033.mylibrary;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
@@ -11,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 
 import java.sql.SQLException;
@@ -35,9 +39,9 @@ public class BookDeleteListActivity extends ActionBarActivity {
                 GridView gridView = (GridView) parent;
                 // クリックされたアイテムを取得します
                 Book item = (Book) gridView.getItemAtPosition(position);
-                if (item.isSelected()){
+                if (item.isSelected()) {
                     item.setSelected(false);
-                }else {
+                } else {
                     item.setSelected(true);
                 }
                 adapter.notifyDataSetChanged();
@@ -50,15 +54,73 @@ public class BookDeleteListActivity extends ActionBarActivity {
                 GridView gridView = (GridView) parent;
                 // クリックされたアイテムを取得します
                 Book item = (Book) gridView.getItemAtPosition(position);
-                if (item.isSelected()){
+                if (item.isSelected()) {
                     item.setSelected(false);
-                }else {
+                } else {
                     item.setSelected(true);
                 }
                 adapter.notifyDataSetChanged();
                 return true;
             }
         });
+
+        Button button = (Button)findViewById(R.id.btnDelList);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Book> bookArrayList = new ArrayList<Book>();
+                for (int i = 0; i < gv.getAdapter().getCount(); i++) {
+                    Book book = (Book) gv.getAdapter().getItem(i);
+                    if (book.isSelected()) {
+                        bookArrayList.add(book);
+                    }
+                }
+                longMess(bookArrayList);
+            }
+        });
+    }
+
+    public void longMess(final ArrayList<Book> book){
+        new AlertDialog.Builder(this)
+                .setTitle(getText(R.string.action_del))
+                .setMessage("選択したアイテムを削除します。")
+                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MySQLiteOpenHelper dbh = null;
+                        SQLiteDatabase db = null;
+                        try {
+                            dbh = new MySQLiteOpenHelper(BookDeleteListActivity.this);
+                            db = dbh.getWritableDatabase();
+                            //delete
+                            String where = "";
+                            String[] whereList = new String[book.size()];
+                            for (int i = 0; i < book.size(); i++) {
+                                if (where.isEmpty()) {
+                                    where = "_id=?";
+                                } else {
+                                    where = where + " or _id=?";
+                                }
+                                whereList[i] = String.valueOf(book.get(i).get_id());
+                            }
+                            int ret = db.delete("book_table", where, whereList);
+
+                        } finally {
+                            //終了
+                            if (db != null) {
+                                db.close();
+                            }
+                            if (dbh != null) {
+                                dbh.close();
+                            }
+                        }
+                        Intent intent = new Intent(BookDeleteListActivity.this, BookListActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setPositiveButton("Cancel", null)
+                .show();
     }
 
     public void AccessDatabase(){

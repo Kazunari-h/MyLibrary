@@ -14,9 +14,10 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="160dp"
+            android:padding="6dp"
             android:src="@drawable/noimage"
             android:scaleType="fitCenter"
-            android:background="#fff"
+            android:background="@drawable/item_list_background"
             android:id="@+id/itemImage"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
@@ -27,7 +28,7 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
+            android:layout_margin="8dp"
             android:id="@+id/linearLayout">
 
             <TextView
